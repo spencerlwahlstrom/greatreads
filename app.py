@@ -25,11 +25,11 @@ mysql = MySQL(app)
 # Routes
 @app.route("/books")
 def books():
-    return render_template("books.j2")
+    return render_template("books.html")
 
 @app.route("/reviews")
 def reviews():
-    return render_template("reviews.j2")
+    return render_template("reviews.html")
 
 # Listener
 if __name__ == "__main__":
