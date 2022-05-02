@@ -29,7 +29,20 @@ def root():
 
 @app.route("/books")
 def books():
-    return render_template("books.html")
+    # temporary books array
+    # TODO: populate data from database
+    books = []
+    books.append({
+        "book_id": 1,
+        "title": "The Fellowship of the Ring",
+        "publisher": "George Allen & Unwin",
+        "isbn": 9780007136599,
+        "summary": "A meek Hobbit from the Shire and...",
+        "published_date": "1954-07-29",
+        "msrp": 10.95,
+        "average_rating": 4.5
+    })
+    return render_template("books.html", books=books)
 
 @app.route("/reviews")
 def reviews():

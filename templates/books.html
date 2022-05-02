@@ -8,19 +8,21 @@
     <p class="important">Displays all Books and their attributes</p>
     <table>
         <tr>
-            <th>book_id</th>
-            <th>title</th>
-            <th>publisher</th>
-            <th>isbn</th>
-            <th>summary</th>
-            <th>published_date</th>
-            <th>msrp</th>
-            <th>average_rating</th>
+            {% for attr in books[0].keys() %}
+            <th>{{ attr }}</th>
+            {% endfor %}
         </tr>
+        {% for book in books %}
         <tr>
-            <td>1</td>
-            <td>The Fellowship of the Ring</td>
+            <td>{{ book.book_id }}</td>
+            <td>{{ book.title }}</td>
+            <td>{{ book.publisher }}</td>
+            <td>{{ book.isbn }}</td>
+            <td>{{ book.summary }}</td>
+            <td>{{ book.published_date }}</td>
+            <td>{{ book.msrp }}</td>
+            <td>{{ book.average_rating }}</td>
         </tr>
-
+        {% endfor %}
     </table>
 {% endblock %}
