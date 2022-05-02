@@ -1,0 +1,9 @@
+.important {
+    color: #336699;
+}
+
+#footer {
+    width: 100%;
+    position: fixed;
+    bottom: 10px;
+}

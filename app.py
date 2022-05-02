@@ -23,6 +23,10 @@ app.config["MYSQL_CURSORCLASS"] = "DictCursor"
 mysql = MySQL(app)
 
 # Routes
+@app.route("/")
+def root():
+    return render_template("layout.html")
+
 @app.route("/books")
 def books():
     return render_template("books.html")

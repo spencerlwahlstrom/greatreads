@@ -1,2 +1,11 @@
-<h1>Reviews</h1>
-<p>This will be the Reviews table</p>
+{% extends "layout.html" %}
+{% block title %}Reviews{% endblock %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block content %}
+    <h1>Reviews</h1>
+    <p class="important">Displays Reviews for all Books</p>
+    <table>
+    </table>
+{% endblock %}
