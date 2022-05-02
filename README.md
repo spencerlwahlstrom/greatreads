@@ -30,7 +30,7 @@
 `pkill -u <username> gunicorn`
 
 ### Connect to VPN and view site at 
-http://flip1.engr.oregonstate.edu:{port number}
+http://flip1.engr.oregonstate.edu:{port}
 
 ### To stop venv
 `deactivate`
