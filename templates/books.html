@@ -11,6 +11,8 @@
             {% for attr in books[0].keys() %}
             <th>{{ attr }}</th>
             {% endfor %}
+            <th></th>
+            <th></th>
         </tr>
         {% for book in books %}
         <tr>
@@ -22,6 +24,8 @@
             <td>{{ book.published_date }}</td>
             <td>{{ book.msrp }}</td>
             <td>{{ book.average_rating }}</td>
+            <td><button>Edit</button></td>
+            <td><button>Delete</button></td>
         </tr>
         {% endfor %}
     </table>
