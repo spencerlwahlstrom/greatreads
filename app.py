@@ -172,6 +172,47 @@ def genres():
     })
     return render_template("genres.html", genres = genres)
 
+@app.route("/authors")
+def authors():
+    authors = []
+    authors.append({
+        "author_id": 1,
+        "first_name": "J.R.R.",
+        "last_name":  "Tolkien"
+        })
+
+    authors.append({
+        "author_id": 2,
+        "first_name": "Neil",
+        "last_name":  "Gaiman"
+        })
+
+    authors.append({
+        "author_id": 3,
+        "first_name": "Terry",
+        "last_name":  "Pratchett"
+        })
+    
+    authors.append({
+        "author_id": 4,
+        "first_name": "Jodi",
+        "last_name":  "Picoult"
+        })
+    
+    authors.append({
+        "author_id": 5,
+        "first_name": "Samantha",
+        "last_name":  "Van Leer"
+        })
+
+    authors.append({
+        "author_id": 6,
+        "first_name": "J.K.",
+        "last_name":  "Rowling"
+        })
+
+    return render_template("authors.html", authors = authors)
+    
 # Listener
 if __name__ == "__main__":
     app.run(port=8337, debug=True)

@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+{% block title %}Authors{% endblock %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block content %}
+    <h1>Authors</h1>
+    <p class="important">Displays all Authors and their attributes</p>
+    <table border="1" cellpadding="5">
+        <tr>
+            {% for attr in authors[0].keys() %}
+            <th>{{ attr }}</th>
+            {% endfor %}
+            <th></th>
+            <th></th>
+        </tr>
+        {% for author in authors %}
+        <tr>
+            <td>{{author.author_id}}</td>
+            <td>{{author.first_name}}</td>
+            <td>{{author.last_name}}</td>
+            <td><button>Edit</button></td>
+            <td><button>Delete</button></td>
+        </tr>
+        {% endfor %}
+    </table>
+    <p class="important">Displays Books by Authors</p>
+    <table border="1" cellpadding="5">
+        <tr>
+            <th>Book title</th>
+            <th>Author</th>
+            <th></th>
+            <th></th>
+        </tr>
+        <tr>
+            <td>Data</td>
+            <td>Data</td>
+            <td><button>Edit</button></td>
+            <td><button>Delete</button></td>
+        </tr>
+    </table>
+    <form method = "POST" id = "addAuthor">
+        <h3>Add An Author</h3>
+        <label>First Name </label> <input type="text" name = "first_name">
+        <label>Last Name </label> <input type="text" name = "last_name">
+        <input type ="submit">
+    </form>
+    <form method = "POST" id = "addAuthorToBook">
+        <h3>Add An Author to A Book</h3>
+        <label>Author ID </label> <input type="number" name = "author_id">
+        <label>Book ID </label> <input type="number" name = "book_id">
+        <input type ="submit">
+    </form>
+    <form method = "POST" id = "updateAuthors">
+        <h3>Update An Author</h3>
+        <label>Author ID </label> <input type="number" name = "author_id">
+        <label>First Name </label> <input type="text" name = "first_name">
+        <label>Last Name </label> <input type="text" name = "last_name">
+        <input type ="submit">
+    </form>
+{% endblock %}

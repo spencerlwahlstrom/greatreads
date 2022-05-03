@@ -11,28 +11,48 @@
         {% for attr in genres[0].keys() %}
         <th>{{ attr }}</th>
             {% endfor %}
+        <th></th>
+        <th></th>
     </tr>
     {% for genre in genres %}
     <tr>
         <td>{{ genre.genre_id }}</td>
         <td>{{ genre.description }} </td>
+        <td><button>Edit</button></td>
+        <td><button>Delete</button></td>
     </tr>
     {% endfor %}
 </table>
-<p class="important">Displays Books Ordered By Genres</p>
+<p class="important">Displays Books By Genres</p>
 <table border="1" cellpadding="5">
     <tr>
         <th>Book title</th>
         <th>Genre</th>
+        <th></th>
+        <th></th>
     </tr>
     <tr>
         <td>Data</td>
         <td>Data</td>
+        <td><button>Edit</button></td>
+        <td><button>Delete</button></td>
     </tr>
 </table>
 <form method = "POST" id = "addGenre">
     <h3>Add A Genre</h3>
-    <label>description </label> <input type="text" name = "description">
+    <label>Description </label> <input type="text" name = "description">
+    <input type ="submit">
+</form>
+<form method = "POST" id = "addBookToGenre">
+    <h3>Add A Book to A Genre</h3>
+    <label>Genre ID </label> <input type="number" name = "genre_id">
+    <label>Book ID </label> <input type="number" name = "book_id">
+    <input type ="submit">
+</form>
+<form method = "POST" id = "updateGenres">
+    <h3>Update A Genre</h3>
+    <label>Genre ID </label> <input type="number" name = "genre_id">
+    <label>Description </label> <input type="text" name = "description">
     <input type ="submit">
 </form>
 
