@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+{% block title %}Genres{% endblock %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block content %}
+<h1>Genres</h1>
+<p class="important">Displays All Genres</p>
+<table border="1" cellpadding="5">
+    <tr>
+        {% for attr in genres[0].keys() %}
+        <th>{{ attr }}</th>
+            {% endfor %}
+    </tr>
+    {% for genre in genres %}
+    <tr>
+        <td>{{ genre.genre_id }}</td>
+        <td>{{ genre.description }} </td>
+    </tr>
+    {% endfor %}
+</table>
+<p class="important">Displays Books Ordered By Genres</p>
+<table border="1" cellpadding="5">
+    <tr>
+        <th>Book title</th>
+        <th>Genre</th>
+    </tr>
+    <tr>
+        <td>Data</td>
+        <td>Data</td>
+    </tr>
+</table>
+<form method = "POST" id = "addGenre">
+    <h3>Add A Genre</h3>
+    <label>description </label> <input type="text" name = "description">
+    <input type ="submit">
+</form>
+
+{% endblock %}

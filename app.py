@@ -133,6 +133,45 @@ def reviews():
 
     return render_template("reviews.html", reviews= reviews)
 
+@app.route("/genres")
+def genres():
+    genres = []
+    genres.append({
+        "genre_id": 1,
+        "description": "Fiction",
+
+    })
+
+    genres.append({
+        "genre_id": 2,
+        "description": "Fantasy",
+
+    })
+
+    genres.append({
+        "genre_id": 3,
+        "description": "Science Fiction",
+
+    })
+
+    genres.append({
+        "genre_id": 4,
+        "description": "Humor",
+
+    })
+
+    genres.append({
+        "genre_id": 5,
+        "description": "Children's",
+
+    })
+    genres.append({
+        "genre_id": 6,
+        "description": "Adventure",
+
+    })
+    return render_template("genres.html", genres = genres)
+
 # Listener
 if __name__ == "__main__":
     app.run(port=8337, debug=True)
