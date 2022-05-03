@@ -37,7 +37,7 @@ DELETE FROM reviews WHERE review_id = :review_id_from_delete_button;
 -- AUTHORS
 
 -- SELECT: Get all author data for the Author's page ()
-SELECT authors.author_id, authors.first_name, authors.last_name FROM authors;
+SELECT * FROM authors;
 
 -- SELECT: Get all booktitles associated with Authors for Books by Authors Table
 SELECT  books.title, CONCAT(authors.first_name,' ',authors.last_name) 
