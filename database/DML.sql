@@ -16,8 +16,9 @@ DELETE FROM books WHERE book_id = :book_id_from_delete_button;
 
 -- REVIEWS
 
--- SELECT: Get all review data to populate the Reviews page
-SELECT * from reviews;
+-- SELECT: Get all review data to populate the Reviews page (include book's title)
+SELECT r.review_id, r.book_id, b.title, r.rating, r.summary, r.user_handle FROM reviews r
+INNER JOIN books b ON r.book_id = b.book_id;
 
 -- INSERT: Get book_id and title to populate the dropdown for adding a review
 SELECT book_id, title from books;
