@@ -26,4 +26,28 @@
         </tr>
         {% endfor %}
     </table>
+    <form method = "POST" id = "addReview">
+        <h3>Add A Review</h3>
+        <label>Book</label> <select name="book">
+            <option value = "0"></option>
+            <option value = "1">The Fellowship of the Ring</option>
+            <option value = "2">Good Omens: The Nice and Accurate Prophecies of Agnes Nutter, Witch</option>
+            <option value = "3">Between the Lines</option>
+            <option value = "4">Harry Potter and the Philosopher's Stone</option>
+            <option value = "5">Harry Potter and the Chamber of Secrets</option>
+        </select>
+        <label>rating</label> <input type="number" name = "rating"> 
+        <label>summary</label> <input type ="text" name = "summary">
+        <label>user_handle</label> <input type ="text" name = "user_handle">
+        <input type ="submit">
+    </form>
+    <form method = "POST" id = "updateReview">
+        <h3>Update A Review</h3>
+        <label>Review Id</label> <input type="number" name = "review_id"> 
+        <label>Book</label>  <input type ="text" name = "book">
+        <label>rating</label> <input type="number" name = "rating"> 
+        <label>summary</label> <input type ="text" name = "summary">
+        <label>user_handle</label> <input type ="text" name = "user_handle">
+        <input type ="submit">
+    </form>
 {% endblock %}
