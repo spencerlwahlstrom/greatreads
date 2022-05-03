@@ -7,3 +7,14 @@
     position: fixed;
     bottom: 10px;
 }
+
+label,input{
+    display:flex;
+    flex-direction:column;
+    max-height: 40px;
+  }
+
+form {
+    padding-bottom: 5%;
+    padding-top: 5%;
+}
