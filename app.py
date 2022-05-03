@@ -81,7 +81,57 @@ def books():
 
 @app.route("/reviews")
 def reviews():
-    return render_template("reviews.html")
+    reviews = []
+
+    reviews.append({
+        "review_id": 1,
+        "book_id": 1,
+        "rating": 5.0,
+        "summary": "Was life changing!",
+        "user_handle": "user1"
+    })
+
+    reviews.append({
+        "review_id": 2,
+        "book_id": 1,
+        "rating": 1.0,
+        "summary": "Was horrible I fell asleep!",
+        "user_handle": "user2"
+    })
+
+    reviews.append({
+        "review_id": 3,
+        "book_id": 2,
+        "rating": 4.6,
+        "summary": "I loved it",
+        "user_handle": "user3"
+    })
+
+    reviews.append({
+        "review_id": 4,
+        "book_id": 3,
+        "rating": 3.0,
+        "summary": "I thought it was just meh",
+        "user_handle": "user4"
+    })
+
+    reviews.append({
+        "review_id": 5,
+        "book_id": 4,
+        "rating": 4.5,
+        "summary": "I wanted to love it but almost hated it",
+        "user_handle": "user5"
+    })
+
+    reviews.append({
+        "review_id": 6,
+        "book_id": 5,
+        "rating": 4.5,
+        "summary": "I really liked this one",
+        "user_handle": "user6"
+    })
+
+    return render_template("reviews.html", reviews= reviews)
 
 # Listener
 if __name__ == "__main__":

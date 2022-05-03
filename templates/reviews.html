@@ -6,6 +6,24 @@
 {% block content %}
     <h1>Reviews</h1>
     <p class="important">Displays Reviews for all Books</p>
-    <table>
+    <table border="1" cellpadding="5">
+        <tr>
+            {% for attr in reviews[0].keys() %}
+            <th>{{ attr }}</th>
+            {% endfor %}
+            <th></th>
+            <th></th>
+        </tr>
+        {% for review in reviews %}
+        <tr>
+            <td>{{ review.review_id }}</td>
+            <td>{{ review.book_id }}</td>
+            <td>{{ review.rating }}</td>
+            <td>{{ review.summary }}</td>
+            <td>{{ review.user_handle }}</td>
+            <th><a>Edit</a></th>
+            <th><a>Delete</a></th>
+        </tr>
+        {% endfor %}
     </table>
 {% endblock %}
