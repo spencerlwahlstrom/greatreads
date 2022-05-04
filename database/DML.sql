@@ -45,4 +45,52 @@ FROM authors
 INNER JOIN authors_books ON authors.author_id = authors_books.author_id
 INNER JOIN books ON books.book_id = authors_books.book_id;
 
+-- INSERT: Add a new author
+INSERT INTO authors (first_name, last_name)
+VALUES(first_name:first_name_input, last_name:last_name_input);
+
+-- INSERT: Add a new author, book relationship to authors_books table
+INSERT INTO authors_books(author_id, book_id)
+VALUES(author_id:author_id_input, book_id:book_id_input);
+
+-- UPDATE: Edit an author
+UPDATE authors SET first_name=:first_name_input, last_name=:last_name_input
+WHERE author_id =:author_id_from_edit_button;
+
+-- DELETE: Delete an author
+DELETE FROM authors WHERE author_id = :author_id_from_delete_button;
+
+-- DELETE: Delete an entry in the authors_books intersection table
+DELETE FROM authors_books WHERE author_id =:author_id_from_delete_button AND book_id =:book_id_from_delete_button;
+
+-- GENRES
+
+-- SELECT: Get all genre data for Genres
+SELECT * FROM genres;
+
+-- SELECT:
+SELECT books.title, genres.description AS genre
+FROM genres
+INNER JOIN books_genres ON genres.genre_id = books_genres.genre_id
+INNER JOIN books ON books.book_id = books_genres.book_id;
+
+-- INSERT: Add a new genre
+INSERT INTO genres (description)
+VALUES(description:description_input);
+
+-- INSERT: Add a book to a genre making a new books_genres entry in the table
+INSERT INTO books_genres (book_id, genre_id)
+VALUES(book_id:book_id_input, genre_id:genre_id_input);
+
+-- UPDATE: Edit a genre
+UPDATE genres SET description=:description_input
+WHERE genre_id =:genre_id_from_edit_button;
+
+-- DELETE: Delete a genre
+DELETE FROM genres WHERE genre_id = :genre_id_from_delete_button;
+
+-- DELETE: Delete an entry in the books_genres interesection table
+DELETE FROM books_genres WHERE genre_id = :genre_id_from_delete_button AND book_id =:book_id_from_delete_button;
+
+
 
