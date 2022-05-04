@@ -25,7 +25,12 @@ mysql = MySQL(app)
 # Routes
 @app.route("/")
 def root():
-    return render_template("layout.html")
+    return render_template("index.html")
+
+# TODO: delete this route (placeholder for submission Project Step 3)
+@app.route("/index.html")
+def index():
+    return render_template("index.html")
 
 @app.route("/books")
 def books():
@@ -187,4 +192,4 @@ def authors():
     
 # Listener
 if __name__ == "__main__":
-    app.run(port=8337, debug=True)
+    app.run(port=56879, debug=True)

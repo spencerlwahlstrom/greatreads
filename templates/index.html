@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+{% block title %}Home{% endblock %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block content %}
+    <h2>Books</h2>
+    <p class="important">
+        Displays all Books and their attributes.
+        <br>
+        You can add a new Book, update an existing Book,
+        and delete an existing Book. 
+        <br>
+        Deleting an existing Book will remove it
+        from the intersection tables authors_books and books_genres, 
+        as well as any associated reviews from the reviews tables.
+    </p>
+
+    <h2>Authors</h2>
+    <p class="important">
+        Displays all Authors and their attributes. Also displays all Books by Authors with the use of the authors_books intersection table.
+        <br>
+        You can add a new Author, update an existing Author, delete an existing Author,
+        and add an existing Author to a Book which updates the authors_books intersection table.
+    </p>
+    
+    <h2>Reviews</h2>
+    <p class="important">
+        Displays all Reviews and their attributes. 
+        <br>
+        You can add a new Review, update an existing Review, and delete an existing Review.
+    </p>
+
+    <h2>Genres</h2>
+    <p class="important">
+        Displays all Genres and their attributes. Also displays all Books by Genres with the use of the books_genres intersection table.
+        <br>
+        You can add a new Genre, update an existing Genre, delete an existing Genre,
+        and add an existing Genre to a Book which updates the books_genres intersection table.
+    </p>
+
+{% endblock %}
