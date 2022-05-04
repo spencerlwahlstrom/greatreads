@@ -16,8 +16,6 @@
         </tr>
         {% for review in reviews %}
         <tr>
-            <td>{{ review.review_id }}</td>
-            <td>{{ review.book_id }}</td>
             <td>{{ review.rating }}</td>
             <td>{{ review.summary }}</td>
             <td>{{ review.user_handle }}</td>
@@ -43,7 +41,6 @@
     </form>
     <form method = "POST" id = "updateReview">
         <h3>Update A Review</h3>
-        <label>Review Id</label> <input type="number" name = "review_id"> 
         <label>Book</label>  <input type ="text" name = "book">
         <label>Rating</label> <input type="number" name = "rating"> 
         <label>Summary</label> <input type ="text" name = "summary">

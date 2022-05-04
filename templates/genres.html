@@ -16,7 +16,6 @@
     </tr>
     {% for genre in genres %}
     <tr>
-        <td>{{ genre.genre_id }}</td>
         <td>{{ genre.description }} </td>
         <td><button>Edit</button></td>
         <td><button>Delete</button></td>
@@ -43,13 +42,36 @@
 </form>
 <form method = "POST" id = "addBookToGenre">
     <h3>Add A Book to A Genre</h3>
-    <label>Genre ID </label> <input type="number" name = "genre_id">
-    <label>Book ID </label> <input type="number" name = "book_id">
+    <label>Genre</label> <select name="genre">
+        <option value = "0"></option>
+        <option value = "1">Fiction</option>
+        <option value = "2">Fantasy</option>
+        <option value = "3">Science Fiction</option>
+        <option value = "4">Humor</option>
+        <option value = "5">Children's</option>
+        <option value = "6">Adventure</option>
+    </select>
+    <label>Book</label> <select name="book">
+        <option value = "0"></option>
+        <option value = "1">The Fellowship of the Ring</option>
+        <option value = "2">Good Omens: The Nice and Accurate Prophecies of Agnes Nutter, Witch</option>
+        <option value = "3">Between the Lines</option>
+        <option value = "4">Harry Potter and the Philosopher's Stone</option>
+        <option value = "5">Harry Potter and the Chamber of Secrets</option>
+    </select>
     <input type ="submit">
 </form>
 <form method = "POST" id = "updateGenres">
     <h3>Update A Genre</h3>
-    <label>Genre ID </label> <input type="number" name = "genre_id">
+    <label>Genre</label> <select name="genre">
+        <option value = "0"></option>
+        <option value = "1">Fiction</option>
+        <option value = "2">Fantasy</option>
+        <option value = "3">Science Fiction</option>
+        <option value = "4">Humor</option>
+        <option value = "5">Children's</option>
+        <option value = "6">Adventure</option>
+    </select>
     <label>Description </label> <input type="text" name = "description">
     <input type ="submit">
 </form>

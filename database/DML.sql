@@ -53,6 +53,12 @@ VALUES(first_name:first_name_input, last_name:last_name_input);
 INSERT INTO authors_books(author_id, book_id)
 VALUES(author_id:author_id_input, book_id:book_id_input);
 
+-- INSERT: Get book_id and title to populate the dropdown for adding a review
+SELECT book_id, title from books;
+
+-- INSERT: Get author_id and fullname from authors
+SELECT author_id, CONCAT(first_name, last_name) FROM authors;
+
 -- UPDATE: Edit an author
 UPDATE authors SET first_name=:first_name_input, last_name=:last_name_input
 WHERE author_id =:author_id_from_edit_button;
@@ -81,6 +87,12 @@ VALUES(description:description_input);
 -- INSERT: Add a book to a genre making a new books_genres entry in the table
 INSERT INTO books_genres (book_id, genre_id)
 VALUES(book_id:book_id_input, genre_id:genre_id_input);
+
+-- INSERT: Get book_id and title to populate the dropdown for adding a review
+SELECT book_id, title from books;
+
+-- INSERT: Get genre_id, description to populate the dropdown for adding an entry to books_genres
+SELECT genre_id, description from genres;
 
 -- UPDATE: Edit a genre
 UPDATE genres SET description=:description_input
