@@ -23,6 +23,7 @@
         </tr>
         {% endfor %}
     </table>
+    <br><br>
     <p class="important">Displays Books by Authors</p>
     <table border="1" cellpadding="5">
         <tr>
@@ -36,7 +37,18 @@
             <td><button>Delete</button></td>
         </tr>
     </table>
-    <form method = "POST" id = "addAuthor">
+    <form method="GET" id = "Author Filter">
+        <label>Filter Table By Author</label> <select name="Author">
+            <option value = "0"></option>
+            <option value = "1">J.R.R. Tolkien</option>
+            <option value = "2">Neil Gaiman</option>
+            <option value = "3">Terry Pratchett</option>
+            <option value = "4">Jodi Picoult</option>
+            <option value = "5">Samantha Van Leer</option>
+            <option value = "6">J.K. Rowling</option>
+        </select>    
+    </form>
+    <form method = "POST" id = "addAuthor" padding-bottom="0">
         <h3>Add An Author</h3>
         <label>First Name </label> <input type="text" name = "first_name">
         <label>Last Name </label> <input type="text" name = "last_name">

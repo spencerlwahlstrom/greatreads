@@ -20,7 +20,7 @@ DELETE FROM books WHERE book_id = :book_id_from_delete_button;
 SELECT r.review_id, r.book_id, b.title, r.rating, r.summary, r.user_handle FROM reviews r
 INNER JOIN books b ON r.book_id = b.book_id;
 
--- INSERT: Get book_id and title to populate the dropdown for adding a review
+-- SELECT: Get book_id and title to populate the dropdown for adding a review
 SELECT book_id, title from books;
 
 -- INSERT: Add a new review
@@ -43,7 +43,20 @@ SELECT * FROM authors;
 SELECT  books.title, CONCAT(authors.first_name,' ',authors.last_name) 
 FROM authors
 INNER JOIN authors_books ON authors.author_id = authors_books.author_id
-INNER JOIN books ON books.book_id = authors_books.book_id;
+INNER JOIN books ON books.book_id = authors_books.book_id
+
+-- SELECT: Filter authors table by input to get all books by a single author. 
+SELECT  books.title, CONCAT(authors.first_name,' ',authors.last_name) 
+FROM authors
+INNER JOIN authors_books ON authors.author_id = authors_books.author_id
+INNER JOIN books ON books.book_id = authors_books.book_id
+WHERE authors.author_id =:author_id_from_drop_down;
+
+-- SELECT: Get book_id and title to populate the dropdown for adding an author
+SELECT book_id, title from books;
+
+-- SELECT: Get author_id and fullname from authors for populating dropdown lists
+SELECT author_id, CONCAT(first_name, last_name) FROM authors;
 
 -- INSERT: Add a new author
 INSERT INTO authors (first_name, last_name)
@@ -52,12 +65,6 @@ VALUES(first_name:first_name_input, last_name:last_name_input);
 -- INSERT: Add a new author, book relationship to authors_books table
 INSERT INTO authors_books(author_id, book_id)
 VALUES(author_id:author_id_input, book_id:book_id_input);
-
--- INSERT: Get book_id and title to populate the dropdown for adding a review
-SELECT book_id, title from books;
-
--- INSERT: Get author_id and fullname from authors
-SELECT author_id, CONCAT(first_name, last_name) FROM authors;
 
 -- UPDATE: Edit an author
 UPDATE authors SET first_name=:first_name_input, last_name=:last_name_input
@@ -74,11 +81,12 @@ DELETE FROM authors_books WHERE author_id =:author_id_from_delete_button AND boo
 -- SELECT: Get all genre data for Genres
 SELECT * FROM genres;
 
--- SELECT:
+-- SELECT: Gets all books for each genre, from books_genre table
 SELECT books.title, genres.description AS genre
 FROM genres
 INNER JOIN books_genres ON genres.genre_id = books_genres.genre_id
 INNER JOIN books ON books.book_id = books_genres.book_id;
+
 
 -- INSERT: Add a new genre
 INSERT INTO genres (description)
