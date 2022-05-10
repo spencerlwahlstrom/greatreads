@@ -32,8 +32,8 @@ def root():
 def index():
     return render_template("index.html")
 
-@app.route("/books")
-def books():
+@app.route("/sample-books")
+def sample_books():
     # temporary books array
     # TODO: populate data from database
     books = []
@@ -78,7 +78,7 @@ def books():
         "average_rating": 4.8
     })
 
-    return render_template("books.html", books=books)
+    return render_template("sample-books.html", books=books)
 
 @app.route("/reviews")
 def reviews():
@@ -190,21 +190,55 @@ def authors():
 
     return render_template("authors.html", authors = authors)
     
-@app.route("/books2")
-def books2():
-    cur = mysql.connection.cursor()
-    cur.execute("SELECT * FROM books;")
-    books = cur.fetchall()
-    return render_template("books2.html", books=books)
+@app.route("/books", methods=["GET", "POST"])
+def books():
+    # Get all books
+    if request.method == "GET":
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT * FROM books;")
+        books = cur.fetchall()
+        return render_template("books.html", books=books)
+    
+    # Add a new book
+    if request.method == "POST":
+        book = request.form
+        cur = mysql.connection.cursor()
+        query = "INSERT INTO books (title, publisher, isbn, summary, published_date, msrp, average_rating) VALUES (%s, %s, %s, %s, %s, %s, %s);"
+        params = (book["title"], book["publisher"], book["isbn"], book["summary"], book["published_date"], book["msrp"], book["average_rating"])
+        cur.execute(query, params)
+        mysql.connection.commit()
+        return redirect("/books")
 
-@app.route("/edit/<book_id>")
-def edit(book_id):
+@app.route("/edit/<book_id>", methods=["GET", "POST"])
+def edit_book(book_id):
+    # Display book to edit with current attributes
+    if request.method == "GET":
+        cur = mysql.connection.cursor()
+        query = "SELECT * FROM books WHERE book_id = %s;"
+        params = (book_id)
+        cur.execute(query, params)
+        results = cur.fetchall()
+        return render_template("edit.html", book=results[0])
+    
+    # Receive data from edit and update database
+    if request.method == "POST":
+        book = request.form
+        cur = mysql.connection.cursor()
+        query = "UPDATE books SET title = %s, publisher = %s, isbn = %s, summary = %s, published_date = %s, msrp = %s, average_rating = %s WHERE book_id = %s;"
+        params = (book["title"], book["publisher"], book["isbn"], book["summary"], book["published_date"], book["msrp"], book["average_rating"], book["book_id"])
+        cur.execute(query, params)
+        mysql.connection.commit()
+        return redirect("/books")
+
+@app.route("/delete/<book_id>")
+def delete_book(book_id):
     cur = mysql.connection.cursor()
-    query = "SELECT * FROM books WHERE book_id = %s"
+    query = "DELETE FROM books WHERE book_id = %s"
     params = (book_id)
     cur.execute(query, params)
-    results = cur.fetchall()
-    return render_template("edit.html", book=results[0])
+    mysql.connection.commit()
+    return redirect("/books")
+
 
 # Listener
 if __name__ == "__main__":

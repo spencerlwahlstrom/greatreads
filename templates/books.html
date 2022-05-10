@@ -9,7 +9,9 @@
     <table border="1" cellpadding="5">
         <tr>
             {% for attr in books[0].keys() %}
+            {% if attr != "book_id" %}
             <th>{{ attr }}</th>
+            {% endif %}
             {% endfor %}
             <th></th>
             <th></th>
@@ -19,41 +21,26 @@
             <td>{{ book.title }}</td>
             <td>{{ book.publisher }}</td>
             <td>{{ book.isbn }}</td>
-            <td>{{ book.summary }}</td>
+            <td>{{ book.summary[0:25] }}...</td>
             <td>{{ book.published_date }}</td>
             <td>{{ book.msrp }}</td>
             <td>{{ book.average_rating }}</td>
-            <td><button>Edit</button></td>
-            <td><button>Delete</button></td>
+            <td><a href="/edit/{{book.book_id}}"><button>Edit</button></a></td>
+            <td><a href="/delete/{{book.book_id}}"><button>Delete</button></a></td>
         </tr>
         {% endfor %}
     </table>
-    <form method = "POST" id = "addBook">
-        <h3>Add A Book</h3>
-        <label>Title</label> <input type="text" name = "title">
-        <label>Publisher</label> <input type="text" name = "publisher"> 
-        <label>Summary</label> <input type ="text" name = "summary">
-        <label>Published Date</label> <input type ="date" name = "published_date">
-        <label>MSRP</label> <input type="number" name = "msrp">
-        <label>Average Rating</label> <input type="number" name="average_rating">
-        <input type ="submit">
+
+    <form method="POST" id="add_book" action="/books">
+        <h3>Add a Book</h3>
+        <label>Title</label> <input type="text" name="title">
+        <label>Publisher</label> <input type="text" name="publisher"> 
+        <label>ISBN</label> <input type="text" name="isbn">
+        <label>Summary</label> <textarea rows="10" name="summary"></textarea>
+        <label>Published Date</label> <input type="date" name="published_date">
+        <label>MSRP</label> <input type="number" name="msrp" step="0.01">
+        <label>Average Rating</label> <input type="number" name="average_rating" min="1" max="5" step="0.1">
+        <input type="submit" value="Add">
     </form>
-    <form method = "POST" id = "updateBook">
-        <h3>Update A Book</h3>
-        <label>Book</label> <select name="book">
-            <option value = "0"></option>
-            <option value = "1">The Fellowship of the Ring</option>
-            <option value = "2">Good Omens: The Nice and Accurate Prophecies of Agnes Nutter, Witch</option>
-            <option value = "3">Between the Lines</option>
-            <option value = "4">Harry Potter and the Philosopher's Stone</option>
-            <option value = "5">Harry Potter and the Chamber of Secrets</option>
-        </select>
-        <label>Title</label> <input type="text" name = "title">
-        <label>Publisher</label> <input type="text" name = "publisher"> 
-        <label>Summary</label> <input type ="text" name = "summary">
-        <label>Published Date</label> <input type ="date" name = "published_date">
-        <label>MSRP</label> <input type="number" name = "msrp">
-        <label>Average Rating</label> <input type="number" name="average_rating">
-        <input type ="submit">
-    </form>
+
 {% endblock %}
