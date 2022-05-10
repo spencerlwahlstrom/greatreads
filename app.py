@@ -190,6 +190,22 @@ def authors():
 
     return render_template("authors.html", authors = authors)
     
+@app.route("/books2")
+def books2():
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM books;")
+    books = cur.fetchall()
+    return render_template("books2.html", books=books)
+
+@app.route("/edit/<book_id>")
+def edit(book_id):
+    cur = mysql.connection.cursor()
+    query = "SELECT * FROM books WHERE book_id = %s"
+    params = (book_id)
+    cur.execute(query, params)
+    results = cur.fetchall()
+    return render_template("edit.html", book=results[0])
+
 # Listener
 if __name__ == "__main__":
-    app.run(port=56879, debug=True)
+    app.run(port=8337, debug=True)

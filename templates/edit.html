@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+{% block title %}Books{% endblock %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block content %}
+    <h2>Edit</h2>
+    <p class="important">Editing {{ book.title }}</p>
+    
+    <form method="POST" id="edit_book">
+        <input type="hidden" name="book_id" value={{book.book_id}}>
+        <label>Title</label> <input type="text" name="title" value="{{book.title}}">
+        <label>Publisher</label> <input type="text" name="publisher" value="{{book.publisher}}"> 
+        <label>Summary</label> <textarea rows="10" name="summary">{{book.summary}}</textarea>
+        <label>Published Date</label> <input type="date" name="published_date" value="{{book.published_date}}">
+        <label>MSRP</label> <input type="number" name="msrp" value="{{book.msrp}}">
+        <label>Average Rating</label> <input type="number" name="average_rating" value="{{book.average_rating}}">
+        <input type="submit">
+    </form>
+
+{% endblock %}

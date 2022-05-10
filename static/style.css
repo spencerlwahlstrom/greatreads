@@ -18,3 +18,12 @@ form {
     padding-bottom: 3%;
     padding-top: 2%;
 }
+
+input[type=text] {
+    width: 25%;
+}
+
+textarea {
+    height: auto;
+    width: 25%;
+}
