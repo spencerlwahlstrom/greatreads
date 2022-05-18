@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+{% block title %}Books by Authors{% endblock %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block content %}
+    <h2>Edit</h2>
+    <p class="important">Editing author_id {{author_id}} with book_id {{book_id}}</p>
+    
+    <form method="POST" id="edit_ab" action="/authors-books/edit/{{book_id}}/{{author_id}}">
+        <h3>Edit an Author to Book</h3>
+        <label>Authors</label> <select name="author">
+            {% for author in authors %}
+                {% if author.author_id == author_id %}
+                    <option value="{{author.author_id}}" selected>{{author.full_name}}</option>
+                {% else %}
+                    <option value="{{author.author_id}}">{{author.full_name}}</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+        <label>Books</label> <select name="book">
+            {% for book in books %}
+                {% if book.book_id == book_id %} 
+                    <option value="{{book.book_id}}" selected>{{book.title}}</option>
+                {% else %} 
+                    <option value="{{book.book_id}}">{{book.title}}</option>
+                {% endif %} 
+            {% endfor %}
+        </select>
+        <input type="submit">
+    </form>
+
+{% endblock %}

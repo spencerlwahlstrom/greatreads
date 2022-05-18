@@ -1,0 +1,60 @@
+{% extends "layout.html" %}
+{% block title %}Books by Authors{% endblock %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block content %}
+    <h2>Authors_Books</h2>
+    <p class="important">Displays all Books by Authors (M:M relationship)</p>
+    <table border="1" cellpadding="5">
+        <tr>
+            <th>book title</th>
+            <th>author name</th>
+            <th></th>
+            <th></th>
+        </tr>
+        {% for ab in authors_books %}
+        <tr>
+            <td>{{ab.title}}</td>
+            <td>{{ab.full_name}}</td>
+            <td><a href="/authors-books/edit/{{ab.book_id}}/{{ab.author_id}}"><button>Edit</button></a></td>
+            <td><a href="/authors-books/delete/{{ab.book_id}}/{{ab.author_id}}"><button>Delete</button></a></td>
+        </tr>
+        {% endfor %}
+    </table>
+    
+    <form method="GET" id = "Author Filter">
+        <label>Filter Table By Author</label> <select name="Author">
+            <option value = "0"></option>
+            <option value = "1">J.R.R. Tolkien</option>
+            <option value = "2">Neil Gaiman</option>
+            <option value = "3">Terry Pratchett</option>
+            <option value = "4">Jodi Picoult</option>
+            <option value = "5">Samantha Van Leer</option>
+            <option value = "6">J.K. Rowling</option>
+        </select>    
+    </form>
+
+    <form method = "POST" id = "addAuthorToBook">
+        <h3>Add An Author to A Book</h3>
+        <label>Author</label> <select name="author">
+            <option value = "0"></option>
+            <option value = "1">J.R.R. Tolkien</option>
+            <option value = "2">Neil Gaiman</option>
+            <option value = "3">Terry Pratchett</option>
+            <option value = "4">Jodi Picoult</option>
+            <option value = "5">Samantha Van Leer</option>
+            <option value = "6">J.K. Rowling</option>
+        </select>
+        <label>Book</label> <select name="book">
+            <option value = "0"></option>
+            <option value = "1">The Fellowship of the Ring</option>
+            <option value = "2">Good Omens: The Nice and Accurate Prophecies of Agnes Nutter, Witch</option>
+            <option value = "3">Between the Lines</option>
+            <option value = "4">Harry Potter and the Philosopher's Stone</option>
+            <option value = "5">Harry Potter and the Chamber of Secrets</option>
+        </select>
+        <input type ="submit">
+    </form>
+
+{% endblock %}

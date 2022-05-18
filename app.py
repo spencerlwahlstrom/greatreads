@@ -1,3 +1,4 @@
+from crypt import methods
 from flask import Flask, render_template, json, redirect, request
 from flask_mysqldb import MySQL
 import os
@@ -31,54 +32,6 @@ def root():
 @app.route("/index.html")
 def index():
     return render_template("index.html")
-
-@app.route("/sample-books")
-def sample_books():
-    # temporary books array
-    # TODO: populate data from database
-    books = []
-
-    books.append({
-        "title": "The Fellowship of the Ring",
-        "publisher": "George Allen & Unwin",
-        "isbn": 9780007136599,
-        "summary": "A meek Hobbit from the Shire and...",
-        "published_date": "1954-07-29",
-        "msrp": 10.95,
-        "average_rating": 4.5
-    })
-
-    books.append({
-        "title": "Good Omens: The Nice and...",
-        "publisher": "Workman",
-        "isbn": 9780060853983,
-        "summary": "According to The Nice and...",
-        "published_date": "1990-05-10",
-        "msrp": 8.99,
-        "average_rating": 4.7
-    })
-
-    books.append({
-        "title": "Between the Lines",
-        "publisher": "Simon Pulse",
-        "isbn": 9781451635812,
-        "summary": "Delilah, a 15-year-old...",
-        "published_date": "2012-06-12",
-        "msrp": 8.07,
-        "average_rating": 4.3
-    })
-
-    books.append({
-        "title": "Harry Potter and the Philosopher's Stone",
-        "publisher": "Bloomsbury",
-        "isbn": 9780939173341,
-        "summary": "Adaptation of the first...",
-        "published_date": "1997-06-26",
-        "msrp": 7.50,
-        "average_rating": 4.8
-    })
-
-    return render_template("sample-books.html", books=books)
 
 @app.route("/reviews")
 def reviews():
@@ -189,7 +142,8 @@ def authors():
         })
 
     return render_template("authors.html", authors = authors)
-    
+
+# BOOKS CRUD
 @app.route("/books", methods=["GET", "POST"])
 def books():
     # Get all books
@@ -204,42 +158,93 @@ def books():
         book = request.form
         cur = mysql.connection.cursor()
         query = "INSERT INTO books (title, publisher, isbn, summary, published_date, msrp, average_rating) VALUES (%s, %s, %s, %s, %s, %s, %s);"
-        params = (book["title"], book["publisher"], book["isbn"], book["summary"], book["published_date"], book["msrp"], book["average_rating"])
+        params = [book["title"], book["publisher"], book["isbn"], book["summary"], book["published_date"], book["msrp"], book["average_rating"]]
         cur.execute(query, params)
         mysql.connection.commit()
         return redirect("/books")
 
-@app.route("/edit/<book_id>", methods=["GET", "POST"])
+@app.route("/books/edit/<book_id>", methods=["GET", "POST"])
 def edit_book(book_id):
     # Display book to edit with current attributes
     if request.method == "GET":
         cur = mysql.connection.cursor()
         query = "SELECT * FROM books WHERE book_id = %s;"
-        params = (book_id)
+        params = [book_id]
         cur.execute(query, params)
         results = cur.fetchall()
-        return render_template("edit.html", book=results[0])
+        return render_template("books-edit.html", book=results[0])
     
     # Receive data from edit and update database
     if request.method == "POST":
         book = request.form
         cur = mysql.connection.cursor()
         query = "UPDATE books SET title = %s, publisher = %s, isbn = %s, summary = %s, published_date = %s, msrp = %s, average_rating = %s WHERE book_id = %s;"
-        params = (book["title"], book["publisher"], book["isbn"], book["summary"], book["published_date"], book["msrp"], book["average_rating"], book["book_id"])
+        params = [book["title"], book["publisher"], book["isbn"], book["summary"], book["published_date"], book["msrp"], book["average_rating"], book["book_id"]]
         cur.execute(query, params)
         mysql.connection.commit()
         return redirect("/books")
 
-@app.route("/delete/<book_id>")
+@app.route("/books/delete/<book_id>")
 def delete_book(book_id):
     cur = mysql.connection.cursor()
     query = "DELETE FROM books WHERE book_id = %s"
-    params = (book_id)
+    params = [book_id]
     cur.execute(query, params)
     mysql.connection.commit()
     return redirect("/books")
 
+# AUTHORS_BOOKS CRUD
+@app.route("/authors-books")
+def authors_books():
+    # Get all authors_books
+    cur = mysql.connection.cursor()
+    query = "SELECT b.title AS title, CONCAT(a.first_name, ' ', a.last_name) AS full_name, "\
+            "b.book_id, a.author_id FROM authors AS a "\
+            "INNER JOIN authors_books AS ab ON a.author_id = ab.author_id "\
+            "INNER JOIN books AS b ON b.book_id = ab.book_id;"
+    cur.execute(query)
+    results = cur.fetchall()
+    return render_template("authors-books.html", authors_books=results)
+
+@app.route("/authors-books/edit/<book_id>/<author_id>", methods=["GET", "POST"])
+def edit_ab(book_id, author_id):
+    # Show edit page for the selected author/book combination
+    if request.method == "GET":
+        cur = mysql.connection.cursor()
+        books_query = "SELECT book_id, title FROM books;"
+        cur.execute(books_query)
+        books = cur.fetchall()
+        
+        authors_query = "SELECT author_id, CONCAT(first_name, ' ', last_name) AS full_name FROM authors;"
+        cur.execute(authors_query)
+        authors = cur.fetchall()
+
+        # have to cast book_id and author_id to integers for comparison in html!
+        return render_template("authors-books-edit.html", books=books, authors=authors, book_id=int(book_id), author_id=int(author_id))
+    
+    # Update database with user's selection, redirect
+    if request.method == "POST":
+        ab = request.form
+        new_book_id = ab["book"]
+        new_author_id = ab["author"]
+
+        cur = mysql.connection.cursor()
+        query = "UPDATE authors_books SET author_id=%s, book_id=%s WHERE author_id=%s AND book_id=%s;"
+        params = [new_author_id, new_book_id, author_id, book_id]
+        cur.execute(query, params)
+        mysql.connection.commit()
+
+        return redirect("/authors-books")
+
+@app.route("/authors-books/delete/<book_id>/<author_id>")
+def delete_ab(book_id, author_id):
+    cur = mysql.connection.cursor()
+    query = "DELETE FROM authors_books WHERE author_id=%s AND book_id=%s"
+    params = [author_id, book_id]
+    cur.execute(query, params)
+    mysql.connection.commit()
+    return redirect("/authors-books")
 
 # Listener
 if __name__ == "__main__":
-    app.run(port=56879, debug=True)
+    app.run(port=8337, debug=True)

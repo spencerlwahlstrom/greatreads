@@ -24,77 +24,14 @@
         {% endfor %}
     </table>
     <br><br>
-    <p class="important">Displays Books by Authors</p>
-    <table border="1" cellpadding="5">
-        <tr>
-            <th>Book title</th>
-            <th>Author</th>
-            <th></th>
-        </tr>
-        <tr>
-            <td>The Fellowship of the Ring</td>
-            <td>J.R.R. Tolkien</td>
-            <td><button>Delete</button></td>
-        </tr>
-        <tr>
-            <td>Good Omens: The Nice and Accurate Prophecies of Agnes Nutter, Witch</td>
-            <td>Neil Gaiman</td>
-            <td><button>Delete</button></td>
-        </tr>
-        <tr>
-            <td>Good Omens: The Nice and Accurate Prophecies of Agnes Nutter, Witch</td>
-            <td>Terry Pratchett</td>
-            <td><button>Delete</button></td>
-        </tr>
-        <tr>
-            <td>Between the Lines</td>
-            <td>Jodi Picoult</td>
-            <td><button>Delete</button></td>
-        </tr>
-        <tr>
-            <td>Between the Lines</td>
-            <td>Samantha Van Leer</td>
-            <td><button>Delete</button></td>
-        </tr>
-    </table>
-    <form method="GET" id = "Author Filter">
-        <label>Filter Table By Author</label> <select name="Author">
-            <option value = "0"></option>
-            <option value = "1">J.R.R. Tolkien</option>
-            <option value = "2">Neil Gaiman</option>
-            <option value = "3">Terry Pratchett</option>
-            <option value = "4">Jodi Picoult</option>
-            <option value = "5">Samantha Van Leer</option>
-            <option value = "6">J.K. Rowling</option>
-        </select>    
-    </form>
+
     <form method = "POST" id = "addAuthor" padding-bottom="0">
         <h3>Add An Author</h3>
         <label>First Name </label> <input type="text" name = "first_name">
         <label>Last Name </label> <input type="text" name = "last_name">
         <input type ="submit">
     </form>
-    <form method = "POST" id = "addAuthorToBook">
-        <h3>Add An Author to A Book</h3>
-        <label>Author</label> <select name="author">
-            <option value = "0"></option>
-            <option value = "1">J.R.R. Tolkien</option>
-            <option value = "2">Neil Gaiman</option>
-            <option value = "3">Terry Pratchett</option>
-            <option value = "4">Jodi Picoult</option>
-            <option value = "5">Samantha Van Leer</option>
-            <option value = "6">J.K. Rowling</option>
-        </select>
-        <label>Book</label> <select name="book">
-            <option value = "0"></option>
-            <option value = "1">The Fellowship of the Ring</option>
-            <option value = "2">Good Omens: The Nice and Accurate Prophecies of Agnes Nutter, Witch</option>
-            <option value = "3">Between the Lines</option>
-            <option value = "4">Harry Potter and the Philosopher's Stone</option>
-            <option value = "5">Harry Potter and the Chamber of Secrets</option>
-        </select>
-        <input type ="submit">
-    </form>
+
     <form method = "POST" id = "updateAuthors">
         <h3>Update An Author</h3>
         <label>Author</label> <select name="author">

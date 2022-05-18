@@ -7,7 +7,7 @@
     <h2>Edit</h2>
     <p class="important">Editing {{ book.title }}</p>
     
-    <form method="POST" id="edit_book" action="/edit/{{book.book_id}}">
+    <form method="POST" id="edit_book" action="/books/edit/{{book.book_id}}">
         <input type="hidden" name="book_id" value={{book.book_id}}>
         <label>Title</label> <input type="text" name="title" value="{{book.title}}">
         <label>Publisher</label> <input type="text" name="publisher" value="{{book.publisher}}"> 
