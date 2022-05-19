@@ -1,3 +1,16 @@
+# Step 4 Draft Version Update
+
+### What works
+All CRUD steps for the Books entity are functional and wired up to the DB. Read, Update, and Delete
+work for the M:M intersection table Authors_Books (everything but Create). 
+
+### What doesn't work
+All other entities (Authors, Reviews, Genres, Books_Genres) are not wired up to the DB yet and
+consist of sample data from the previous draft.
+
+### Where/why you are blocked
+No blockers, we are excited to implement CRUD for the remaining entities and to make the app prettier!
+
 # Quick start guide
 
 ### Create a .env like the below, fill username and password
