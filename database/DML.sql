@@ -36,14 +36,8 @@ DELETE FROM reviews WHERE review_id = :review_id_from_delete_button;
 
 -- AUTHORS
 
--- SELECT: Get all author data for the Author's page ()
+-- SELECT: Get all author data for the Author's page
 SELECT * FROM authors;
-
--- SELECT: Get all booktitles associated with Authors for Books by Authors Table
-SELECT  books.title, CONCAT(authors.first_name,' ',authors.last_name) 
-FROM authors
-INNER JOIN authors_books ON authors.author_id = authors_books.author_id
-INNER JOIN books ON books.book_id = authors_books.book_id
 
 -- SELECT: Filter authors table by input to get all books by a single author. 
 SELECT  books.title, CONCAT(authors.first_name,' ',authors.last_name) 
@@ -56,15 +50,11 @@ WHERE authors.author_id =:author_id_from_drop_down;
 SELECT book_id, title from books;
 
 -- SELECT: Get author_id and fullname from authors for populating dropdown lists
-SELECT author_id, CONCAT(first_name, last_name) FROM authors;
+SELECT author_id, CONCAT(first_name, ' ', last_name) FROM authors;
 
 -- INSERT: Add a new author
 INSERT INTO authors (first_name, last_name)
 VALUES(first_name:first_name_input, last_name:last_name_input);
-
--- INSERT: Add a new author, book relationship to authors_books table
-INSERT INTO authors_books(author_id, book_id)
-VALUES(author_id:author_id_input, book_id:book_id_input);
 
 -- UPDATE: Edit an author
 UPDATE authors SET first_name=:first_name_input, last_name=:last_name_input
@@ -75,6 +65,25 @@ DELETE FROM authors WHERE author_id = :author_id_from_delete_button;
 
 -- DELETE: Delete an entry in the authors_books intersection table
 DELETE FROM authors_books WHERE author_id =:author_id_from_delete_button AND book_id =:book_id_from_delete_button;
+
+-- AUTHORS_BOOKS
+
+-- SELECT: Get all booktitles associated with Authors for Books by Authors Table
+SELECT  books.title, CONCAT(authors.first_name,' ',authors.last_name) 
+FROM authors
+INNER JOIN authors_books ON authors.author_id = authors_books.author_id
+INNER JOIN books ON books.book_id = authors_books.book_id
+
+-- INSERT: Add a new author, book relationship to authors_books table
+INSERT INTO authors_books(author_id, book_id)
+VALUES(author_id:author_id_input, book_id:book_id_input);
+
+-- UPDATE: Edit an existing Authors to Books relationship by selecting from a dropdown
+UPDATE authors_books SET author_id=:author_id_from_drop_down, book_id=:book_id_from_dropdown 
+WHERE author_id=:author_id_from_submit AND book_id=:book_id_from_submit;
+
+-- DELETE: Delete an existing Authors to Books relationship with the Delete button.
+DELETE FROM authors_books WHERE author_id=:author_id_from_delete_button AND book_id=:book_id_from_delete_button;
 
 -- GENRES
 

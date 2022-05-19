@@ -239,7 +239,7 @@ def edit_ab(book_id, author_id):
 @app.route("/authors-books/delete/<book_id>/<author_id>")
 def delete_ab(book_id, author_id):
     cur = mysql.connection.cursor()
-    query = "DELETE FROM authors_books WHERE author_id=%s AND book_id=%s"
+    query = "DELETE FROM authors_books WHERE author_id=%s AND book_id=%s;"
     params = [author_id, book_id]
     cur.execute(query, params)
     mysql.connection.commit()
