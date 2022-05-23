@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+{% block title %}Books Genres Edit{% endblock %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block content %}
+    <h2>Edit</h2>
+    <p>Editing Genre for {{ book.title }} </p>
+    <form method = "POST" id = "updateBooksGenres" action = "/genres/edit/{{book.book_id}}/{{genre.genre_id}}">
+        <input type="hidden" name = "original_genre_id" value = "{{genre.genre_id}}">
+        <input type="hidden" name = "book_id" value = "{{book.book_id}}">
+        <label> Genre </label> <select name="genre_id">
+            <option value="{{genre.genre_id}}" selected>{{genre.description}}</option>
+            {% for item in genres %}
+                {% if item.genre_id != genre.genre_id %}
+                    <option value="{{item.genre_id}}"> {{item.description}} </option>
+                {% endif %} 
+            {% endfor %}
+        </select>
+        <input type ="submit">
+    </form>
+{% endblock %}

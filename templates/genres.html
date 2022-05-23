@@ -24,68 +24,48 @@
         </tr>
         {% endfor %}
     </table>
-    <p class="important">Displays Books By Genres</p>
-    <table border="1" cellpadding="5">
-        <tr>
-            <th>Book title</th>
-            <th>Genre</th>
-            <th></th>
-        </tr>
-        <tr>
-            <td>The Fellowship of the Ring</td>
-            <td>Fiction</td>
-            <td><button>Delete</button></td>
-        </tr>
-        <tr>
-            <td>The Fellowship of the Ring</td>
-            <td>Fantasy</td>
-            <td><button>Delete</button></td>
-        </tr>
-        <tr>
-            <td>Harry Potter and the Philosopher's Stone</td>
-            <td>Fiction</td>
-            <td><button>Delete</button></td>
-        </tr>
-        <tr>
-            <td>Harry Potter and the Philosopher's Stone</td>
-            <td>Fantasy</td>
-            <td><button>Delete</button></td>
-        </tr>
-        <tr>
-            <td>Harry Potter and the Philosopher's Stone</td>
-            <td>Children's</td>
-            <td><button>Delete</button></td>
-        </tr>
-        <tr>
-            <td>Harry Potter and the Philosopher's Stone</td>
-            <td>Adventure</td>
-            <td><button>Delete</button></td>
-        </tr>
-    </table>
-    <form method = "POST" id = "addGenre">
+
+    <form method = "POST" id = "addGenre" >
         <h3>Add A Genre</h3>
+        <input type = "hidden" name= "hidden" value = "addGenre">
         <label>Description </label> <input type="text" name = "description">
         <input type ="submit">
     </form>
+
+    <p class="important">Displays Books By Genres</p>
+    <table border="1" cellpadding="5">
+        <tr>
+            <th>Title</th>
+            <th>Genre</th>
+            <th>Edit Genre</th>
+            <th>Delete Genre</th>
+        </tr>
+        {% for bg in books_genres %}
+        <tr>
+            <td>{{ bg.title }}</td>
+            <td>{{ bg.description }}</td>
+            <td><a href="/genres/edit/{{bg.book_id}}/{{bg.genre_id}}"><button>Edit</button></a></td>
+            <td><a href="/genres/delete/{{bg.book_id}}/{{bg.genre_id}}"><button>Delete</button></a></td>
+        </tr>
+        {% endfor %}
+    </table>
+
     <form method = "POST" id = "addBookToGenre">
         <h3>Add A Book to A Genre</h3>
-        <label>Genre</label> <select name="genre">
-            <option value = "0"></option>
-            <option value = "1">Fiction</option>
-            <option value = "2">Fantasy</option>
-            <option value = "3">Science Fiction</option>
-            <option value = "4">Humor</option>
-            <option value = "5">Children's</option>
-            <option value = "6">Adventure</option>
+        <input type = "hidden" name= "hidden" value = "addBookToGenre" >
+        <label>Book</label> <select name="book_id">
+            <option ></option>
+            {% for book in books %}
+            <option value = "{{book.book_id}}" > {{book.title}} </option>
+            {% endfor %}
         </select>
-        <label>Book</label> <select name="book">
-            <option value = "0"></option>
-            <option value = "1">The Fellowship of the Ring</option>
-            <option value = "2">Good Omens: The Nice and Accurate Prophecies of Agnes Nutter, Witch</option>
-            <option value = "3">Between the Lines</option>
-            <option value = "4">Harry Potter and the Philosopher's Stone</option>
-            <option value = "5">Harry Potter and the Chamber of Secrets</option>
+        <label>Genre</label> <select name="genre_id">
+            <option ></option>
+            {% for genre in genres %}
+            <option value = "{{genre.genre_id}}"> {{genre.description}} </option>
+            {% endfor %}
         </select>
         <input type ="submit">
     </form>
+
 {% endblock %}

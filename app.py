@@ -80,22 +80,39 @@ def delete_review(review_id):
     mysql.connection.commit()
     return redirect("/reviews")
     
-# Genres CRUD
+# Genres CRUD and books_genres CRUD
 @app.route("/genres", methods=["GET", "POST"])
 def genres():
     cur = mysql.connection.cursor()
     if request.method == "GET":
         cur.execute("SELECT * FROM genres;")
         genres = cur.fetchall()
-        return render_template("genres.html", genres = genres)
-    
+        query = "SELECT books.title AS title, books.book_id AS book_id, genres.genre_id AS genre_id, genres.description AS description FROM genres "\
+                "INNER JOIN books_genres ON genres.genre_id = books_genres.genre_id "\
+                "INNER JOIN books ON books.book_id = books_genres.book_id "\
+                "ORDER BY description ASC;"
+        cur.execute(query)
+        books_genres = cur.fetchall()
+        cur.execute("SELECT * FROM books;")
+        books = cur.fetchall()
+        return render_template("genres.html", genres = genres, books_genres = books_genres, books = books)
+
     if request.method == "POST":
-        genre = request.form
-        query = "INSERT INTO genres (description) VALUES(%s);"
-        params = [genre["description"]]
-        cur.execute(query, params) 
-        mysql.connection.commit()
-        return redirect("/genres")
+        # Checks which form it is to insert into to correct table
+        if request.form["hidden"] == "addGenre":
+            genre = request.form
+            query = "INSERT INTO genres (description) VALUES(%s);"
+            params = [genre["description"]]
+            cur.execute(query, params) 
+            mysql.connection.commit()
+            return redirect("/genres")
+        if request.form["hidden"] == "addBookToGenre":
+            genre_book = request.form
+            query = "INSERT INTO books_genres (book_id, genre_id) VALUES(%s, %s);"
+            params = [genre_book["book_id"], genre_book["genre_id"]]
+            cur.execute(query, params)
+            mysql.connection.commit()
+            return redirect("/genres")
 
 @app.route("/genres/edit/<genre_id>", methods=["GET", "POST"])
 def edit_genre(genre_id):
@@ -106,7 +123,7 @@ def edit_genre(genre_id):
         cur.execute(query, params)
         results = cur.fetchall()
         return render_template("genres-edit.html", genre = results[0])
-        
+
     if request.method == "POST":
         genre = request.form
         query = "UPDATE genres SET description = %s WHERE genre_id = %s;"
@@ -115,13 +132,45 @@ def edit_genre(genre_id):
         mysql.connection.commit()
         return redirect("/genres")
 
+@app.route("/genres/edit/<book_id>/<genre_id>", methods=["GET", "POST"])
+def edit_book_genre(book_id, genre_id):
+    cur = mysql.connection.cursor()
+    if request.method == "GET":
+        query = "SELECT * FROM books WHERE book_id = %s;"
+        params = [book_id]
+        cur.execute(query, params) 
+        book = cur.fetchall()
+        query = "SELECT * FROM genres WHERE genre_id = %s;"
+        params = [genre_id]
+        cur.execute(query, params)  
+        genre = cur.fetchall()
+        cur.execute("SELECT * FROM genres;")
+        genres = cur.fetchall()
+        return render_template("books-genres.html", book = book[0], genre = genre[0], genres = genres)
     
+    if request.method == "POST":
+        book_genre = request.form
+        query = "UPDATE books_genres SET genre_id = %s WHERE genre_id = %s AND book_id =%s;"
+        params = [book_genre["genre_id"], book_genre["original_genre_id"], book_genre["book_id"]]
+        cur.execute(query, params)
+        mysql.connection.commit()
+        return redirect("/genres")
+
 
 @app.route("/genres/delete/<genre_id>")
 def delete_genre(genre_id):
     cur = mysql.connection.cursor()
     query = "DELETE FROM genres WHERE genre_id = %s;"
     params = [genre_id]
+    cur.execute(query, params)
+    mysql.connection.commit()
+    return redirect("/genres")
+
+@app.route("/genres/delete/<book_id>/<genre_id>")
+def delete_book_genre(book_id, genre_id):
+    cur = mysql.connection.cursor()
+    query = "DELETE FROM books_genres WHERE book_id = %s AND genre_id = %s;"
+    params = [book_id, genre_id]
     cur.execute(query, params)
     mysql.connection.commit()
     return redirect("/genres")
