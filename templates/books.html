@@ -10,7 +10,7 @@
         <tr>
             {% for attr in books[0].keys() %}
             {% if attr != "book_id" %}
-            <th>{{ attr }}</th>
+            <th>{{ attr.replace("_", " ").title()  }}</th>
             {% endif %}
             {% endfor %}
             <th></th>

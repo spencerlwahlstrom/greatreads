@@ -35,26 +35,21 @@
         </select>    
     </form>
 
-    <form method = "POST" id = "addAuthorToBook">
+    <form method = "POST" id = "addAuthorToBook" action = "/authors-books">
         <h3>Add An Author to A Book</h3>
-        <label>Author</label> <select name="author">
+        <label>Author</label> <select name = "author_id">
             <option value = "0"></option>
-            <option value = "1">J.R.R. Tolkien</option>
-            <option value = "2">Neil Gaiman</option>
-            <option value = "3">Terry Pratchett</option>
-            <option value = "4">Jodi Picoult</option>
-            <option value = "5">Samantha Van Leer</option>
-            <option value = "6">J.K. Rowling</option>
+            {% for author in authors %}
+            <option value = "{{author.author_id}}" >{{author.first_name}} {{author.last_name}}</option>
+            {% endfor %}
         </select>
-        <label>Book</label> <select name="book">
+        <label>Book</label> <select name = "book_id">
             <option value = "0"></option>
-            <option value = "1">The Fellowship of the Ring</option>
-            <option value = "2">Good Omens: The Nice and Accurate Prophecies of Agnes Nutter, Witch</option>
-            <option value = "3">Between the Lines</option>
-            <option value = "4">Harry Potter and the Philosopher's Stone</option>
-            <option value = "5">Harry Potter and the Chamber of Secrets</option>
+            {% for book in books %}
+            <option value = "{{book.book_id}}" >{{book.title}} </option>
+            {% endfor %}
         </select>
-        <input type ="submit">
+        <input type ="submit" value="add">
     </form>
 
 {% endblock %}

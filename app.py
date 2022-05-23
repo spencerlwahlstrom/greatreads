@@ -108,40 +108,50 @@ def genres():
     })
     return render_template("genres.html", genres = genres)
 
-@app.route("/authors")
+# Authors CRUD
+@app.route("/authors", methods=["GET", "POST"])
 def authors():
-    authors = []
-    authors.append({
-        "first_name": "J.R.R.",
-        "last_name":  "Tolkien"
-        })
-
-    authors.append({
-        "first_name": "Neil",
-        "last_name":  "Gaiman"
-        })
-
-    authors.append({
-        "first_name": "Terry",
-        "last_name":  "Pratchett"
-        })
+    cur = mysql.connection.cursor()
+    if request.method == "GET":
+        cur.execute("SELECT * FROM authors;")
+        authors = cur.fetchall()
+        return render_template("authors.html", authors = authors)
     
-    authors.append({
-        "first_name": "Jodi",
-        "last_name":  "Picoult"
-        })
-    
-    authors.append({
-        "first_name": "Samantha",
-        "last_name":  "Van Leer"
-        })
+    if request.method == "POST":
+        author = request.form
+        query = "INSERT INTO authors (first_name, last_name) VALUES(%s, %s);"
+        params = [author["first_name"], author["last_name"]]
+        cur.execute(query, params) 
+        mysql.connection.commit()
+        return redirect("/authors")
 
-    authors.append({
-        "first_name": "J.K.",
-        "last_name":  "Rowling"
-        })
+@app.route("/authors/edit/<author_id>", methods=["GET", "POST"])
+def edit_author(author_id):
+    cur = mysql.connection.cursor()
+    if request.method == "GET":
+        query = "SELECT * FROM authors WHERE author_id = %s;"
+        params = [author_id]
+        cur.execute(query, params)
+        results = cur.fetchall()
+        return render_template("authors-edit.html", author=results[0])
 
-    return render_template("authors.html", authors = authors)
+    if request.method == "POST":
+        author = request.form
+        query = "UPDATE authors SET first_name= %s, last_name= %s WHERE author_id = %s;"
+        params = [author["first_name"], author["last_name"], author["author_id"]]
+        cur.execute(query, params)
+        mysql.connection.commit()
+        return redirect("/authors")
+
+
+@app.route("/authors/delete/<author_id>")
+def delete_author(author_id):
+    cur = mysql.connection.cursor()
+    query = "DELETE FROM authors WHERE author_id = %s"
+    params = [author_id]
+    cur.execute(query, params)
+    mysql.connection.commit()
+    return redirect("/authors")
 
 # BOOKS CRUD
 @app.route("/books", methods=["GET", "POST"])
@@ -194,17 +204,32 @@ def delete_book(book_id):
     return redirect("/books")
 
 # AUTHORS_BOOKS CRUD
-@app.route("/authors-books")
+@app.route("/authors-books", methods=["GET", "POST"])
 def authors_books():
     # Get all authors_books
-    cur = mysql.connection.cursor()
-    query = "SELECT b.title AS title, CONCAT(a.first_name, ' ', a.last_name) AS full_name, "\
+    if request.method == "GET":
+        cur = mysql.connection.cursor()
+        query = "SELECT b.title AS title, CONCAT(a.first_name, ' ', a.last_name) AS full_name, "\
             "b.book_id, a.author_id FROM authors AS a "\
             "INNER JOIN authors_books AS ab ON a.author_id = ab.author_id "\
             "INNER JOIN books AS b ON b.book_id = ab.book_id;"
-    cur.execute(query)
-    results = cur.fetchall()
-    return render_template("authors-books.html", authors_books=results)
+        cur.execute(query)
+        results = cur.fetchall()
+        cur.execute("SELECT * FROM authors;")
+        authors = cur.fetchall()
+        cur.execute("SELECT * FROM books;")
+        books = cur.fetchall()
+        return render_template("authors-books.html", authors_books=results, authors=authors, books=books)
+    
+    if request.method == "POST":
+        cur = mysql.connection.cursor()
+        author_book = request.form
+        query = "INSERT INTO authors_books(author_id, book_id) VALUES(%s, %s);"
+        params = [author_book["author_id"], author_book["book_id"]]
+        cur.execute(query, params)
+        mysql.connection.commit()
+        return redirect("/authors-books")
+    
 
 @app.route("/authors-books/edit/<book_id>/<author_id>", methods=["GET", "POST"])
 def edit_ab(book_id, author_id):
