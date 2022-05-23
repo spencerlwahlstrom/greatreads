@@ -35,7 +35,7 @@
             <option value = "{{book.book_id}}">{{book.title}}</option>
             {% endfor %}
         </select>
-        <label>Rating</label> <input type="number" name = "rating"> 
+        <label>Rating</label> <input type="number" name = "rating" min = 0 max = 5 step = ".1"> 
         <label>Summary</label> <input type ="text" name = "summary">
         <label>User Handle</label> <input type ="text" name = "user_handle">
         <input type ="submit">

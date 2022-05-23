@@ -33,6 +33,7 @@ def root():
 def index():
     return render_template("index.html")
 
+# Reviews CRUD
 @app.route("/reviews", methods=["GET", "POST"])
 def reviews():
     cur = mysql.connection.cursor()
@@ -79,39 +80,51 @@ def delete_review(review_id):
     mysql.connection.commit()
     return redirect("/reviews")
     
-
-@app.route("/genres")
+# Genres CRUD
+@app.route("/genres", methods=["GET", "POST"])
 def genres():
-    genres = []
-    genres.append({
-        "description": "Fiction",
+    cur = mysql.connection.cursor()
+    if request.method == "GET":
+        cur.execute("SELECT * FROM genres;")
+        genres = cur.fetchall()
+        return render_template("genres.html", genres = genres)
+    
+    if request.method == "POST":
+        genre = request.form
+        query = "INSERT INTO genres (description) VALUES(%s);"
+        params = [genre["description"]]
+        cur.execute(query, params) 
+        mysql.connection.commit()
+        return redirect("/genres")
 
-    })
+@app.route("/genres/edit/<genre_id>", methods=["GET", "POST"])
+def edit_genre(genre_id):
+    cur = mysql.connection.cursor()
+    if request.method == "GET":
+        query = "SELECT * FROM genres WHERE genre_id = %s;"
+        params = [genre_id]
+        cur.execute(query, params)
+        results = cur.fetchall()
+        return render_template("genres-edit.html", genre = results[0])
+        
+    if request.method == "POST":
+        genre = request.form
+        query = "UPDATE genres SET description = %s WHERE genre_id = %s;"
+        params = [genre["description"], genre["genre_id"]]
+        cur.execute(query, params)
+        mysql.connection.commit()
+        return redirect("/genres")
 
-    genres.append({
-        "description": "Fantasy",
+    
 
-    })
-
-    genres.append({
-        "description": "Science Fiction",
-
-    })
-
-    genres.append({
-        "description": "Humor",
-
-    })
-
-    genres.append({
-        "description": "Children's",
-
-    })
-    genres.append({
-        "description": "Adventure",
-
-    })
-    return render_template("genres.html", genres = genres)
+@app.route("/genres/delete/<genre_id>")
+def delete_genre(genre_id):
+    cur = mysql.connection.cursor()
+    query = "DELETE FROM genres WHERE genre_id = %s;"
+    params = [genre_id]
+    cur.execute(query, params)
+    mysql.connection.commit()
+    return redirect("/genres")
 
 # Authors CRUD
 @app.route("/authors", methods=["GET", "POST"])
