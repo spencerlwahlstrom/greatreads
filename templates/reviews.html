@@ -9,18 +9,21 @@
     <table border="1" cellpadding="5">
         <tr>
             {% for attr in reviews[0].keys() %}
-            <th>{{ attr }}</th>
+            {% if ((attr != "review_id") and (attr != "book_id")) %}
+            <th>{{ attr.replace("_", " ").title() }}</th>
+            {% endif %}
             {% endfor %}
             <th></th>
             <th></th>
         </tr>
         {% for review in reviews %}
-        <tr>
+        <tr> 
+            <td>{{ review.title }}</td>
             <td>{{ review.rating }}</td>
             <td>{{ review.summary }}</td>
             <td>{{ review.user_handle }}</td>
-            <td><button>Edit</button></td>
-            <td><button>Delete</button></td>
+            <td><a href="/reviews/edit/{{review.review_id}}}"><button>Edit</button></a></td>
+            <td><a href="/reviews/delete/{{review.review_id}}"><button>Delete</button></a></td>
         </tr>
         {% endfor %}
     </table>
@@ -28,20 +31,10 @@
         <h3>Add A Review</h3>
         <label>Book</label> <select name="book">
             <option value = "0"></option>
-            <option value = "1">The Fellowship of the Ring</option>
-            <option value = "2">Good Omens: The Nice and Accurate Prophecies of Agnes Nutter, Witch</option>
-            <option value = "3">Between the Lines</option>
-            <option value = "4">Harry Potter and the Philosopher's Stone</option>
-            <option value = "5">Harry Potter and the Chamber of Secrets</option>
+            {% for book in books %}
+            <option value = "{{book.book_id}}">{{book.title}}</option>
+            {% endfor %}
         </select>
-        <label>Rating</label> <input type="number" name = "rating"> 
-        <label>Summary</label> <input type ="text" name = "summary">
-        <label>User Handle</label> <input type ="text" name = "user_handle">
-        <input type ="submit">
-    </form>
-    <form method = "POST" id = "updateReview">
-        <h3>Update A Review</h3>
-        <label>Book</label>  <input type ="text" name = "book">
         <label>Rating</label> <input type="number" name = "rating"> 
         <label>Summary</label> <input type ="text" name = "summary">
         <label>User Handle</label> <input type ="text" name = "user_handle">

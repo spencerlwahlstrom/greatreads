@@ -33,47 +33,52 @@ def root():
 def index():
     return render_template("index.html")
 
-@app.route("/reviews")
+@app.route("/reviews", methods=["GET", "POST"])
 def reviews():
-    reviews = []
+    cur = mysql.connection.cursor()
+    if request.method == "GET":
+        cur.execute("SELECT r.review_id, r.book_id, b.title, r.rating, r.summary, r.user_handle FROM reviews r INNER JOIN books b ON r.book_id = b.book_id;")
+        reviews = cur.fetchall()
+        cur.execute("SELECT * FROM books;")
+        books = cur.fetchall()
+        return render_template("reviews.html", reviews= reviews, books = books)
 
-    reviews.append({
-        "rating": 5.0,
-        "summary": "Was life changing!",
-        "user_handle": "user1"
-    })
+    if request.method == "POST":
+        review = request.form
+        query = "INSERT INTO reviews (book_id, rating, summary, user_handle) VALUES (%s, %s, %s, %s);"
+        params = [review["book"], review["rating"], review["summary"], review["user_handle"]]
+        cur.execute(query, params)
+        mysql.connection.commit()
+        return redirect("/reviews")
 
-    reviews.append({
-        "rating": 1.0,
-        "summary": "Was horrible I fell asleep!",
-        "user_handle": "user2"
-    })
+@app.route("/reviews/edit/<review_id>", methods=["GET", "POST"])
+def edit_review(review_id):
+    if request.method == "GET":
+        cur = mysql.connection.cursor()
+        query = "SELECT * FROM reviews WHERE review_id = %s;"
+        params = [review_id]
+        cur.execute(query, params)
+        results = cur.fetchall()
+        return render_template("reviews-edit.html", review=results[0])
+    
+    if request.method == "POST":
+        review = request.form
+        cur = mysql.connection.cursor()
+        query = "UPDATE reviews SET rating= %s, summary= %s, user_handle=%s WHERE review_id = %s;"
+        params = [review["rating"], review["summary"], review["user_handle"], review["review_id"]]
+        cur.execute(query, params)
+        mysql.connection.commit()
+        return redirect("/reviews")
 
-    reviews.append({
-        "rating": 4.6,
-        "summary": "I loved it",
-        "user_handle": "user3"
-    })
-
-    reviews.append({
-        "rating": 3.0,
-        "summary": "I thought it was just meh",
-        "user_handle": "user4"
-    })
-
-    reviews.append({
-        "rating": 4.5,
-        "summary": "I wanted to love it but almost hated it",
-        "user_handle": "user5"
-    })
-
-    reviews.append({
-        "rating": 4.5,
-        "summary": "I really liked this one",
-        "user_handle": "user6"
-    })
-
-    return render_template("reviews.html", reviews= reviews)
+@app.route("/reviews/delete/<review_id>")
+def delete_review(review_id):
+    cur = mysql.connection.cursor()
+    query = "DELETE FROM reviews WHERE review_id = %s;"
+    params = [review_id]
+    cur.execute(query, params)
+    mysql.connection.commit()
+    return redirect("/reviews")
+    
 
 @app.route("/genres")
 def genres():
@@ -197,7 +202,7 @@ def edit_book(book_id):
 @app.route("/books/delete/<book_id>")
 def delete_book(book_id):
     cur = mysql.connection.cursor()
-    query = "DELETE FROM books WHERE book_id = %s"
+    query = "DELETE FROM books WHERE book_id = %s;"
     params = [book_id]
     cur.execute(query, params)
     mysql.connection.commit()
@@ -207,8 +212,8 @@ def delete_book(book_id):
 @app.route("/authors-books", methods=["GET", "POST"])
 def authors_books():
     # Get all authors_books
+    cur = mysql.connection.cursor()
     if request.method == "GET":
-        cur = mysql.connection.cursor()
         query = "SELECT b.title AS title, CONCAT(a.first_name, ' ', a.last_name) AS full_name, "\
             "b.book_id, a.author_id FROM authors AS a "\
             "INNER JOIN authors_books AS ab ON a.author_id = ab.author_id "\
@@ -220,9 +225,8 @@ def authors_books():
         cur.execute("SELECT * FROM books;")
         books = cur.fetchall()
         return render_template("authors-books.html", authors_books=results, authors=authors, books=books)
-    
+
     if request.method == "POST":
-        cur = mysql.connection.cursor()
         author_book = request.form
         query = "INSERT INTO authors_books(author_id, book_id) VALUES(%s, %s);"
         params = [author_book["author_id"], author_book["book_id"]]

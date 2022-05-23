@@ -8,8 +8,8 @@
     <p class="important">Displays all Books by Authors (M:M relationship)</p>
     <table border="1" cellpadding="5">
         <tr>
-            <th>book title</th>
-            <th>author name</th>
+            <th>Book Title</th>
+            <th>Author Name</th>
             <th></th>
             <th></th>
         </tr>
@@ -23,16 +23,14 @@
         {% endfor %}
     </table>
     
-    <form method="GET" id = "Author Filter">
+    <form method="GET" id = "Author_Filter">
         <label>Filter Table By Author</label> <select name="Author">
             <option value = "0"></option>
-            <option value = "1">J.R.R. Tolkien</option>
-            <option value = "2">Neil Gaiman</option>
-            <option value = "3">Terry Pratchett</option>
-            <option value = "4">Jodi Picoult</option>
-            <option value = "5">Samantha Van Leer</option>
-            <option value = "6">J.K. Rowling</option>
-        </select>    
+            {% for author in authors %}
+            <option value = "{{author.author_id}}" >{{author.first_name}} {{author.last_name}}</option>
+            {% endfor %}
+        </select> 
+        <input type ="submit" value = "filter">   
     </form>
 
     <form method = "POST" id = "addAuthorToBook" action = "/authors-books">
