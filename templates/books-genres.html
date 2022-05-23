@@ -5,7 +5,7 @@
 {% endblock %}
 {% block content %}
     <h2>Edit</h2>
-    <p>Editing Genre for {{ book.title }} </p>
+    <p>Editing {{genre.description}} Genre for {{ book.title }} </p>
     <form method = "POST" id = "updateBooksGenres" action = "/genres/edit/{{book.book_id}}/{{genre.genre_id}}">
         <input type="hidden" name = "original_genre_id" value = "{{genre.genre_id}}">
         <input type="hidden" name = "book_id" value = "{{book.book_id}}">
