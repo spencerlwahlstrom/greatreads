@@ -52,7 +52,7 @@ def reviews():
         mysql.connection.commit()
         return redirect("/reviews")
 
-@app.route("/reviews/edit/<review_id>", methods=["GET", "POST"])
+@app.route("/reviews/edit/<int:review_id>", methods=["GET", "POST"])
 def edit_review(review_id):
     if request.method == "GET":
         cur = mysql.connection.cursor()
@@ -71,7 +71,7 @@ def edit_review(review_id):
         mysql.connection.commit()
         return redirect("/reviews")
 
-@app.route("/reviews/delete/<review_id>")
+@app.route("/reviews/delete/<int:review_id>")
 def delete_review(review_id):
     cur = mysql.connection.cursor()
     query = "DELETE FROM reviews WHERE review_id = %s;"
