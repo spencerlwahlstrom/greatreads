@@ -114,7 +114,7 @@ def genres():
             mysql.connection.commit()
             return redirect("/genres")
 
-@app.route("/genres/edit/<genre_id>", methods=["GET", "POST"])
+@app.route("/genres/edit/<int:genre_id>", methods=["GET", "POST"])
 def edit_genre(genre_id):
     cur = mysql.connection.cursor()
     if request.method == "GET":
@@ -157,7 +157,7 @@ def edit_book_genre(book_id, genre_id):
         return redirect("/genres")
 
 
-@app.route("/genres/delete/<genre_id>")
+@app.route("/genres/delete/<int:genre_id>")
 def delete_genre(genre_id):
     cur = mysql.connection.cursor()
     query = "DELETE FROM genres WHERE genre_id = %s;"
@@ -166,7 +166,7 @@ def delete_genre(genre_id):
     mysql.connection.commit()
     return redirect("/genres")
 
-@app.route("/genres/delete/<book_id>/<genre_id>")
+@app.route("/genres/delete/<int:book_id>/<int:genre_id>")
 def delete_book_genre(book_id, genre_id):
     cur = mysql.connection.cursor()
     query = "DELETE FROM books_genres WHERE book_id = %s AND genre_id = %s;"
