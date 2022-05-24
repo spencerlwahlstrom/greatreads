@@ -7,23 +7,60 @@
     <h2>Authors</h2>
     <p class="important">Displays all Authors and their attributes</p>
     
+    <!-- Button trigger modal -->
+    <div class="container pb-3">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addAuthorModal">
+            Add Author
+        </button>
+    </div> 
+
+    <!-- Modal -->
+    <div class="modal fade" id="addAuthorModal" tabindex="-1" role="dialog" aria-labelledby="addAuthorModal" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="addAuthorModal">Add a new Author</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" id="add_author" action="{{ url_for('authors') }}">
+                    <div class="form-group">
+                        <label for="first_name">First Name</label>
+                        <input type="text" class="form-control" name="first_name" id="first_name">
+                    </div>
+                    <div class="form-group">
+                        <label for="last_name">Last Name</label>
+                        <input type="text" class="form-control" name="last_name" id="last_name">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Add</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        </div>
+    </div>
+
     {% if authors %}
-    <table border="1" cellpadding="5">
+    <table class="table">
         <tr>
             {% for attr in authors[0].keys() %}
             {% if attr != "author_id" %}
             <th>{{ attr.replace("_", " ").title() }}</th>
             {% endif %}
             {% endfor %}
-            <th>Edit Author</th>
-            <th>Delete</th>
+            <th></th>
+            <th></th>
         </tr>
         {% for author in authors %}
         <tr>
             <td>{{author.first_name}}</td>
             <td>{{author.last_name}}</td>
-            <td><a href="{{ url_for('edit_author', author_id=author.author_id) }}"><button>Edit</button></a></td>
-            <td><a href="{{ url_for('delete_author', author_id=author.author_id) }}"><button>Delete</button></a></td>
+            <td><a href="{{ url_for('edit_author', author_id=author.author_id) }}"><button type="button" class="btn btn-secondary">Edit</button></a></td>
+            <td><a href="{{ url_for('delete_author', author_id=author.author_id) }}"><button type="button" class="btn btn-secondary">Delete</button></a></td>
         </tr>
         {% endfor %}
     </table>
@@ -32,14 +69,5 @@
     <p>It looks like there are no Authors in the database :( Please add one!</p>
 
     {% endif %}
-
-    <br><br>
-
-    <form method = "POST" id = "addAuthor" padding-bottom="0">
-        <h3>Add An Author</h3>
-        <label>First Name </label> <input type="text" name = "first_name">
-        <label>Last Name </label> <input type="text" name = "last_name">
-        <input type ="submit">
-    </form>
 
 {% endblock %}
