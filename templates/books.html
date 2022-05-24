@@ -7,6 +7,61 @@
     <h2>Books</h2>
     <p class="important">Displays all Books and their attributes</p>
 
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addBookModal">
+        Add Book
+    </button>
+    
+    <!-- Modal -->
+    <div class="modal fade" id="addBookModal" tabindex="-1" role="dialog" aria-labelledby="addBookModal" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="addBookModal">Add a new Book</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" id="add_book" action="{{ url_for('books') }}">
+                    <div class="form-group">
+                        <label for="title">Title</label>
+                        <input type="text" class="form-control" name="title" id="title">
+                    </div>
+                    <div class="form-group">
+                        <label for="publisher">Publisher</label>
+                        <input type="text" class="form-control" name="publisher" id="publisher">
+                    </div>
+                    <div class="form-group">
+                        <label for="isbn">ISBN</label>
+                        <input type="text" class="form-control" name="isbn" id="isbn">
+                    </div>
+                    <div class="form-group">
+                        <label for="summary">Summary</label>
+                        <textarea rows="10" class="form-control" name="summary" id="summary"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="published_date">Published Date</label>
+                        <input type="date" class="form-control" name="published_date" id="published_date">
+                    </div>
+                    <div class="form-group">
+                        <label for="msrp">MSRP</label>
+                        <input type="number" class="form-control" name="msrp" id="msrp" step="0.01">
+                    </div>
+                    <div class="form-group">
+                        <label for="average_rating">Average Rating</label>
+                        <input type="number" class="form-control" name="average_rating" id="average_rating" min="1" max="5" step="0.1">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Add</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        </div>
+    </div>
+
     {% if books %}
     <table class="table">
         <tr>
@@ -37,38 +92,5 @@
     <p>It looks like there are no Books in the database :( Please add one!</p>
 
     {% endif %}
-
-    <h3>Add a Book</h3>
-    <form method="POST" id="add_book" action="{{ url_for('books') }}">
-        <div class="form-group">
-            <label for="title">Title</label>
-            <input type="text" class="form-control" name="title" id="title">
-        </div>
-        <div class="form-group">
-            <label for="publisher">Publisher</label>
-            <input type="text" class="form-control" name="publisher" id="publisher">
-        </div>
-        <div class="form-group">
-            <label for="isbn">ISBN</label>
-            <input type="text" class="form-control" name="isbn" id="isbn">
-        </div>
-        <div class="form-group">
-            <label for="summary">Summary</label>
-            <textarea rows="10" class="form-control" name="summary" id="summary"></textarea>
-        </div>
-        <div class="form-group">
-            <label for="published_date">Published Date</label>
-            <input type="date" class="form-control" name="published_date" id="published_date">
-        </div>
-        <div class="form-group">
-            <label for="msrp">MSRP</label>
-            <input type="number" class="form-control" name="msrp" id="msrp" step="0.01">
-        </div>
-        <div class="form-group">
-            <label for="average_rating">Average Rating</label>
-            <input type="number" class="form-control" name="average_rating" id="average_rating" min="1" max="5" step="0.1">
-        </div>
-        <button type="submit" class="btn btn-primary">Add</button>
-    </form>
-
+    
 {% endblock %}
