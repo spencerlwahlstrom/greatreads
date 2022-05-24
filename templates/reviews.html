@@ -7,8 +7,59 @@
     <h2>Reviews</h2>
     <p class="important">Displays Reviews for all Books</p>
 
+    <!-- Button trigger modal -->
+    <div class="container pb-3">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addReviewModal">
+            Add Review
+        </button>
+    </div> 
+
+    <!-- Modal -->
+    <div class="modal fade" id="addReviewModal" tabindex="-1" role="dialog" aria-labelledby="addReviewModal" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="addReviewModal">Add a new Review</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" id="addReview" action="{{ url_for('reviews') }}">
+                    <!-- TODO: change the Book select to a Bootstrap dropdown? -->
+                    <div class="form-group">
+                        <label for="book">Book</label>
+                        <select class="form-select" name="book">
+                            <option value = "0"></option>
+                            {% for book in books %}
+                            <option value = "{{book.book_id}}">{{book.title}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="rating">Rating</label>
+                        <input type="number" class="form-control" name="rating" id="rating" min="0" max="5" step="0.1">
+                    </div>
+                    <div class="form-group">
+                        <label for="summary">Summary</label>
+                        <input type="text" class="form-control" name="summary" id="summary">
+                    </div>
+                    <div class="form-group">
+                        <label for="user_handle">User Handle</label>
+                        <input type="text" class="form-control" name="user_handle" id="user_handle">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Add</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        </div>
+    </div>
+
     {% if reviews %}
-    <table border="1" cellpadding="5">
+    <table class="table">
         <tr>
             {% for attr in reviews[0].keys() %}
             {% if ((attr != "review_id") and (attr != "book_id")) %}
@@ -24,8 +75,8 @@
             <td>{{ review.rating }}</td>
             <td>{{ review.summary }}</td>
             <td>{{ review.user_handle }}</td>
-            <td><a href="{{ url_for('edit_review', review_id=review.review_id) }}"><button>Edit</button></a></td>
-            <td><a href="{{ url_for('delete_review', review_id=review.review_id) }}"><button>Delete</button></a></td>
+            <td><a href="{{ url_for('edit_review', review_id=review.review_id) }}"><button type="button" class="btn btn-secondary">Edit</button></a></td>
+            <td><a href="{{ url_for('delete_review', review_id=review.review_id) }}"><button type="button" class="btn btn-secondary">Delete</button></a></td>
         </tr>
         {% endfor %}
     </table>
@@ -35,17 +86,4 @@
 
     {% endif %}
 
-    <form method = "POST" id = "addReview">
-        <h3>Add A Review</h3>
-        <label>Book</label> <select name="book">
-            <option value = "0"></option>
-            {% for book in books %}
-            <option value = "{{book.book_id}}">{{book.title}}</option>
-            {% endfor %}
-        </select>
-        <label>Rating</label> <input type="number" name = "rating" min = 0 max = 5 step = ".1"> 
-        <label>Summary</label> <input type ="text" name = "summary">
-        <label>User Handle</label> <input type ="text" name = "user_handle">
-        <input type ="submit">
-    </form>
 {% endblock %}
