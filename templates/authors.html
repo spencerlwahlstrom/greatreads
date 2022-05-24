@@ -6,6 +6,8 @@
 {% block content %}
     <h2>Authors</h2>
     <p class="important">Displays all Authors and their attributes</p>
+    
+    {% if authors %}
     <table border="1" cellpadding="5">
         <tr>
             {% for attr in authors[0].keys() %}
@@ -25,6 +27,12 @@
         </tr>
         {% endfor %}
     </table>
+
+    {% else %}
+    <p>It looks like there are no Authors in the database :( Please add one!</p>
+
+    {% endif %}
+
     <br><br>
 
     <form method = "POST" id = "addAuthor" padding-bottom="0">

@@ -6,6 +6,8 @@
 {% block content %}
     <h2>Reviews</h2>
     <p class="important">Displays Reviews for all Books</p>
+
+    {% if reviews %}
     <table border="1" cellpadding="5">
         <tr>
             {% for attr in reviews[0].keys() %}
@@ -27,6 +29,12 @@
         </tr>
         {% endfor %}
     </table>
+
+    {% else %}
+    <p>It looks like there are no Reviews in the database :( Please add one!</p>
+
+    {% endif %}
+
     <form method = "POST" id = "addReview">
         <h3>Add A Review</h3>
         <label>Book</label> <select name="book">

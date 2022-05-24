@@ -6,6 +6,8 @@
 {% block content %}
     <h2>Books</h2>
     <p class="important">Displays all Books and their attributes</p>
+
+    {% if books %}
     <table border="1" cellpadding="5">
         <tr>
             {% for attr in books[0].keys() %}
@@ -30,6 +32,11 @@
         </tr>
         {% endfor %}
     </table>
+
+    {% else %}
+    <p>It looks like there are no Books in the database :( Please add one!</p>
+
+    {% endif %}
 
     <form method="POST" id="add_book" action="{{ url_for('books') }}">
         <h3>Add a Book</h3>

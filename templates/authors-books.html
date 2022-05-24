@@ -6,6 +6,8 @@
 {% block content %}
     <h2>Authors_Books</h2>
     <p class="important">Displays all Books by Authors (M:M relationship)</p>
+
+    {% if authors_books %}
     <table border="1" cellpadding="5">
         <tr>
             <th>Book Title</th>
@@ -32,6 +34,11 @@
         </select> 
         <input type ="submit" value = "filter">   
     </form>
+
+    {% else %}
+    <p>There are no Author to Book relationships in the database :( Please add one!</p>
+
+    {% endif %}
 
     <form method="POST" id="addAuthorToBook" action="{{ url_for('authors_books') }}">
         <h3>Add An Author to A Book</h3>
