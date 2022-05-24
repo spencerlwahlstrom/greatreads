@@ -150,11 +150,26 @@ def edit_book_genre(book_id, genre_id):
     
     if request.method == "POST":
         book_genre = request.form
-        query = "UPDATE books_genres SET genre_id = %s WHERE genre_id = %s AND book_id =%s;"
-        params = [book_genre["genre_id"], book_genre["original_genre_id"], book_genre["book_id"]]
+
+        # Check for duplicates
+        query = "SELECT b.title AS title, g.description AS description FROM genres AS g "\
+                "INNER JOIN books_genres AS bg ON g.genre_id = bg.genre_id "\
+                "INNER JOIN books AS b ON b.book_id = bg.book_id "\
+                "WHERE g.genre_id=%s AND b.book_id=%s;"
+        params = [book_genre["genre_id"], book_genre["book_id"]]
         cur.execute(query, params)
-        mysql.connection.commit()
-        return redirect("/genres")
+        duplicate = cur.fetchall()
+
+        # Update if no duplicates found, display error otherwise
+        if not duplicate:
+            query = "UPDATE books_genres SET genre_id = %s WHERE genre_id = %s AND book_id =%s;"
+            params.clear()
+            params = [book_genre["genre_id"], book_genre["original_genre_id"], book_genre["book_id"]]
+            cur.execute(query, params)
+            mysql.connection.commit()
+            return redirect("/genres")
+        else:
+            return render_template("/duplicate.html", bg=duplicate[0])
 
 
 @app.route("/genres/delete/<int:genre_id>")
@@ -315,17 +330,30 @@ def edit_ab(book_id, author_id):
     
     # Update database with user's selection, redirect
     if request.method == "POST":
+        cur = mysql.connection.cursor()
         ab = request.form
         new_book_id = ab["book"]
         new_author_id = ab["author"]
 
-        cur = mysql.connection.cursor()
-        query = "UPDATE authors_books SET author_id=%s, book_id=%s WHERE author_id=%s AND book_id=%s;"
-        params = [new_author_id, new_book_id, author_id, book_id]
+        # Check for duplicates
+        query = "SELECT b.title AS title, CONCAT(a.first_name, ' ', a.last_name) AS full_name FROM authors AS a "\
+                "INNER JOIN authors_books AS ab ON a.author_id = ab.author_id "\
+                "INNER JOIN books AS b ON b.book_id = ab.book_id "\
+                "WHERE a.author_id=%s AND b.book_id=%s;"
+        params = [new_author_id, new_book_id]
         cur.execute(query, params)
-        mysql.connection.commit()
+        duplicate = cur.fetchall()
 
-        return redirect("/authors-books")
+        # Update if no duplicates found, display error otherwise
+        if not duplicate:
+            query = "UPDATE authors_books SET author_id=%s, book_id=%s WHERE author_id=%s AND book_id=%s;"
+            params.clear()
+            params = [new_author_id, new_book_id, author_id, book_id]
+            cur.execute(query, params)
+            mysql.connection.commit()
+            return redirect("/authors-books")
+        else:
+            return render_template("/duplicate.html", ab=duplicate[0])
 
 @app.route("/authors-books/delete/<book_id>/<author_id>")
 def delete_ab(book_id, author_id):

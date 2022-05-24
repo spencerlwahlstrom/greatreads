@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+{% block title %}Duplicate{% endblock %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block content %}
+    <h2>Duplicate Entry Found</h2>
+
+    {% if bg %}
+    <p>The book "{{bg.title}}"" has an existing relationship with the genre "{{bg.description}}"</p>
+    {% endif %}
+    
+    {% if ab %}
+    <p>The book "{{ab.title}}"" has an existing relationship with the author "{{ab.full_name}}"</p>
+    {% endif %}
+
+{% endblock %}
