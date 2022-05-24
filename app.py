@@ -132,7 +132,7 @@ def edit_genre(genre_id):
         mysql.connection.commit()
         return redirect("/genres")
 
-@app.route("/genres/edit/<book_id>/<genre_id>", methods=["GET", "POST"])
+@app.route("/genres/edit/<int:book_id>/<int:genre_id>", methods=["GET", "POST"])
 def edit_book_genre(book_id, genre_id):
     cur = mysql.connection.cursor()
     if request.method == "GET":
