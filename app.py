@@ -297,7 +297,7 @@ def authors_books():
         return redirect("/authors-books")
     
 
-@app.route("/authors-books/edit/<book_id>/<author_id>", methods=["GET", "POST"])
+@app.route("/authors-books/edit/<int:book_id>/<int:author_id>", methods=["GET", "POST"])
 def edit_ab(book_id, author_id):
     # Show edit page for the selected author/book combination
     if request.method == "GET":
