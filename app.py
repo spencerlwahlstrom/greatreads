@@ -192,7 +192,7 @@ def authors():
         mysql.connection.commit()
         return redirect("/authors")
 
-@app.route("/authors/edit/<author_id>", methods=["GET", "POST"])
+@app.route("/authors/edit/<int:author_id>", methods=["GET", "POST"])
 def edit_author(author_id):
     cur = mysql.connection.cursor()
     if request.method == "GET":
