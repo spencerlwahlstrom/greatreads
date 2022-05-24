@@ -240,7 +240,7 @@ def books():
         mysql.connection.commit()
         return redirect("/books")
 
-@app.route("/books/edit/<book_id>", methods=["GET", "POST"])
+@app.route("/books/edit/<int:book_id>", methods=["GET", "POST"])
 def edit_book(book_id):
     # Display book to edit with current attributes
     if request.method == "GET":
@@ -261,7 +261,7 @@ def edit_book(book_id):
         mysql.connection.commit()
         return redirect("/books")
 
-@app.route("/books/delete/<book_id>")
+@app.route("/books/delete/<int:book_id>")
 def delete_book(book_id):
     cur = mysql.connection.cursor()
     query = "DELETE FROM books WHERE book_id = %s;"
