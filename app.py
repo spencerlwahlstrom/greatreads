@@ -211,7 +211,7 @@ def edit_author(author_id):
         return redirect("/authors")
 
 
-@app.route("/authors/delete/<author_id>")
+@app.route("/authors/delete/<int:author_id>")
 def delete_author(author_id):
     cur = mysql.connection.cursor()
     query = "DELETE FROM authors WHERE author_id = %s"
