@@ -5,10 +5,47 @@
 {% endblock %}
 {% block content %}
     <h2>Genres</h2>
-    <p class="important">Displays All Genres</p>
+
+    <p class="important">Displays all Genres</p>
+
+    <!-- Button trigger modal -->
+    <div class="container pb-3">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addGenreModal">
+            Add Genre
+        </button>
+    </div> 
+
+    <!-- Modal -->
+    <div class="modal fade" id="addGenreModal" tabindex="-1" role="dialog" aria-labelledby="addGenreModal" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="addGenreModal">Add a new Genre</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" id="addGenre" action="{{ url_for('genres') }}">
+                    <div class="form-group">
+                        <input type="hidden" class="form-control" name="hidden" value="addGenre">
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <input type="text" class="form-control" name="description" id="description">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Add</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        </div>
+    </div>
 
     {% if genres %}
-    <table border="1" cellpadding="5">
+    <table class="table">
         <tr>
             {% for attr in genres[0].keys() %}
             {% if attr != "genre_id" %}
@@ -21,8 +58,16 @@
         {% for genre in genres %}
         <tr>
             <td>{{ genre.description }} </td>
-            <td><a href="{{ url_for('edit_genre', genre_id=genre.genre_id) }}"><button>Edit</button></a></td>
-            <td><a href="{{ url_for('delete_genre', genre_id=genre.genre_id) }}"><button>Delete</button></a></td>
+            <td>
+                <a href="{{ url_for('edit_genre', genre_id=genre.genre_id) }}">
+                    <button type="button" class="btn btn-secondary">Edit</button>
+                </a>
+            </td>
+            <td>
+                <a href="{{ url_for('delete_genre', genre_id=genre.genre_id) }}">
+                    <button type="button" class="btn btn-secondary">Delete</button>
+                </a>
+            </td>
         </tr>
         {% endfor %}
     </table>
@@ -32,17 +77,61 @@
 
     {% endif %}
 
-    <form method = "POST" id = "addGenre" >
-        <h3>Add A Genre</h3>
-        <input type = "hidden" name= "hidden" value = "addGenre">
-        <label>Description </label> <input type="text" name = "description">
-        <input type ="submit">
-    </form>
+    <h2>Books by Genre</h2>
+    <p class="important">Displays all Books by Genre (M:M)</p>
 
-    <p class="important">Displays Books By Genres</p>
+    <!-- Button trigger modal -->
+    <div class="container pb-3">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addGenreToBook">
+            Add Genre to Book
+        </button>
+    </div>
+    
+    <!-- Modal -->
+    <div class="modal fade" id="addGenreToBook" tabindex="-1" role="dialog" aria-labelledby="addGenreToBook" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="addGenreToBook">Add a new Genre to Book relationship</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" id="addGenreToBook" action="{{ url_for('genres') }}">
+                    <div class="form-group">
+                        <input type="hidden" name="hidden" value="addGenreToBook">
+                    </div>
+                    <div class="form-group">
+                        <label>Book</label>
+                        <select class="form-select" name="book_id">
+                            <option value = "0"></option>
+                            {% for book in books %}
+                            <option value = "{{book.book_id}}" >{{book.title}} </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Genre</label>
+                        <select class="form-select" name="genre_id">
+                            <option value = "0"></option>
+                            {% for genre in genres %}
+                            <option value = "{{genre.genre_id}}" >{{genre.description}} </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Add</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        </div>
+    </div>    
 
     {% if books_genres %}
-    <table border="1" cellpadding="5">
+    <table class="table">
         <tr>
             <th>Title</th>
             <th>Genre</th>
@@ -53,8 +142,16 @@
         <tr>
             <td>{{ bg.title }}</td>
             <td>{{ bg.description }}</td>
-            <td><a href="{{ url_for('edit_book_genre', book_id=bg.book_id, genre_id=bg.genre_id) }}"><button>Edit</button></a></td>
-            <td><a href="{{ url_for('delete_book_genre', book_id=bg.book_id, genre_id=bg.genre_id) }}"><button>Delete</button></a></td>
+            <td>
+                <a href="{{ url_for('edit_book_genre', book_id=bg.book_id, genre_id=bg.genre_id) }}">
+                    <button type="button" class="btn btn-secondary">Edit</button>
+                </a>
+            </td>
+            <td>
+                <a href="{{ url_for('delete_book_genre', book_id=bg.book_id, genre_id=bg.genre_id) }}">
+                    <button type="button" class="btn btn-secondary">Delete</button>
+                </a>
+            </td>
         </tr>
         {% endfor %}
     </table>
@@ -63,23 +160,5 @@
     <p>It looks like there are no Book to Genre relationships in the database :( Please add one!</p>
 
     {% endif %}
-
-    <form method = "POST" id = "addBookToGenre">
-        <h3>Add A Book to A Genre</h3>
-        <input type = "hidden" name= "hidden" value = "addBookToGenre" >
-        <label>Book</label> <select name="book_id">
-            <option ></option>
-            {% for book in books %}
-            <option value = "{{book.book_id}}" > {{book.title}} </option>
-            {% endfor %}
-        </select>
-        <label>Genre</label> <select name="genre_id">
-            <option ></option>
-            {% for genre in genres %}
-            <option value = "{{genre.genre_id}}"> {{genre.description}} </option>
-            {% endfor %}
-        </select>
-        <input type ="submit">
-    </form>
 
 {% endblock %}
