@@ -122,7 +122,7 @@ def genres():
             cur.execute(query, params) 
             mysql.connection.commit()
             return redirect("/genres")
-        if request.form["hidden"] == "addBookToGenre":
+        if request.form["hidden"] == "addGenreToBook":
             genre_book = request.form
 
             # Check for duplicates
@@ -187,7 +187,6 @@ def edit_book_genre(book_id, genre_id):
         # Update if no duplicates found, display error otherwise
         if not duplicate:
             query = "UPDATE books_genres SET genre_id = %s WHERE genre_id = %s AND book_id =%s;"
-            params.clear()
             params = [book_genre["genre_id"], book_genre["original_genre_id"], book_genre["book_id"]]
             cur.execute(query, params)
             mysql.connection.commit()
