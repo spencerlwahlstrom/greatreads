@@ -318,7 +318,7 @@ def authors():
                 params = [author_book["author_id"], author_book["book_id"]]
                 cur.execute(query, params)
                 mysql.connection.commit()
-                return redirect("/authors-books")
+                return redirect("/authors")
             else:
                 return render_template("duplicate.html", ab=duplicate[0])
 
@@ -423,6 +423,10 @@ def ab_duplicate_helper(book_id, author_id):
     duplicate = cur.fetchall()
     return duplicate
 
+<<<<<<< HEAD
+@app.route("/authors/edit/<int:book_id>/<int:author_id>", methods=["GET", "POST"])
+def edit_ab(book_id, author_id):  
+=======
 
 @app.route("/authors-books", methods=["GET", "POST"])
 def authors_books():
@@ -498,6 +502,7 @@ def edit_ab(book_id, author_id):
                 author_id=int(author_id)
                 )
 
+>>>>>>> 626c290bb4a36bc149cf02ff65c1c3681407b533
     # UPDATE - Change a specific author_book relationship
     if request.method == "POST":
         cur = mysql.connection.cursor()
@@ -515,7 +520,7 @@ def edit_ab(book_id, author_id):
             params = [new_author_id, new_book_id, author_id, book_id]
             cur.execute(query, params)
             mysql.connection.commit()
-            return redirect("/authors-books")
+            return redirect("/authors")
         else:
             return render_template("/duplicate.html", ab=duplicate[0])
 
