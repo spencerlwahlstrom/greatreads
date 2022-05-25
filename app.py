@@ -81,6 +81,19 @@ def delete_review(review_id):
     return redirect("/reviews")
     
 # Genres CRUD and books_genres CRUD
+def bg_duplicate_helper(book_id, genre_id):
+    """Helper function returns None or the duplicate Books_Genres entry if found"""
+    cur = mysql.connection.cursor()
+    # Check for duplicates
+    query = "SELECT b.title AS title, g.description AS description FROM genres AS g "\
+            "INNER JOIN books_genres AS bg ON g.genre_id = bg.genre_id "\
+            "INNER JOIN books AS b ON b.book_id = bg.book_id "\
+            "WHERE g.genre_id=%s AND b.book_id=%s;"
+    params = [genre_id, book_id]
+    cur.execute(query, params)
+    duplicate = cur.fetchall()
+    return duplicate[0]
+
 @app.route("/genres", methods=["GET", "POST"])
 def genres():
     cur = mysql.connection.cursor()
@@ -108,11 +121,19 @@ def genres():
             return redirect("/genres")
         if request.form["hidden"] == "addBookToGenre":
             genre_book = request.form
-            query = "INSERT INTO books_genres (book_id, genre_id) VALUES(%s, %s);"
-            params = [genre_book["book_id"], genre_book["genre_id"]]
-            cur.execute(query, params)
-            mysql.connection.commit()
-            return redirect("/genres")
+
+            # Check for duplicates
+            duplicate = bg_duplicate_helper(genre_book["book_id"], genre_book["genre_id"])
+        
+            # Update if no duplicates found, display error otherwise
+            if not duplicate:
+                query = "INSERT INTO books_genres (book_id, genre_id) VALUES(%s, %s);"
+                params = [genre_book["book_id"], genre_book["genre_id"]]
+                cur.execute(query, params)
+                mysql.connection.commit()
+                return redirect("/genres")
+            else:
+                return render_template("duplicate.html", bg=duplicate)
 
 @app.route("/genres/edit/<int:genre_id>", methods=["GET", "POST"])
 def edit_genre(genre_id):
@@ -152,13 +173,7 @@ def edit_book_genre(book_id, genre_id):
         book_genre = request.form
 
         # Check for duplicates
-        query = "SELECT b.title AS title, g.description AS description FROM genres AS g "\
-                "INNER JOIN books_genres AS bg ON g.genre_id = bg.genre_id "\
-                "INNER JOIN books AS b ON b.book_id = bg.book_id "\
-                "WHERE g.genre_id=%s AND b.book_id=%s;"
-        params = [book_genre["genre_id"], book_genre["book_id"]]
-        cur.execute(query, params)
-        duplicate = cur.fetchall()
+        duplicate = bg_duplicate_helper(book_genre["book_id"], book_genre["genre_id"])
 
         # Update if no duplicates found, display error otherwise
         if not duplicate:
@@ -169,7 +184,7 @@ def edit_book_genre(book_id, genre_id):
             mysql.connection.commit()
             return redirect("/genres")
         else:
-            return render_template("/duplicate.html", bg=duplicate[0])
+            return render_template("/duplicate.html", bg=duplicate)
 
 
 @app.route("/genres/delete/<int:genre_id>")
@@ -276,6 +291,19 @@ def delete_book(book_id):
     return redirect("/books")
 
 # AUTHORS_BOOKS CRUD
+def ab_duplicate_helper(book_id, author_id):
+    """Helper function returns None or the duplicate Author_Book entry if found"""
+    cur = mysql.connection.cursor()
+    # Check for duplicates
+    query = "SELECT b.title AS title, CONCAT(a.first_name, ' ', a.last_name) AS full_name FROM authors AS a "\
+            "INNER JOIN authors_books AS ab ON a.author_id = ab.author_id "\
+            "INNER JOIN books AS b ON b.book_id = ab.book_id "\
+            "WHERE a.author_id=%s AND b.book_id=%s;"
+    params = [author_id, book_id]
+    cur.execute(query, params)
+    duplicate = cur.fetchall()
+    return duplicate[0]
+
 @app.route("/authors-books", methods=["GET", "POST"])
 def authors_books():
     # Get all authors_books
@@ -295,12 +323,20 @@ def authors_books():
 
     if request.method == "POST":
         author_book = request.form
-        query = "INSERT INTO authors_books(author_id, book_id) VALUES(%s, %s);"
-        params = [author_book["author_id"], author_book["book_id"]]
-        cur.execute(query, params)
-        mysql.connection.commit()
-        return redirect("/authors-books")
-    
+
+        # Check for duplicates
+        duplicate = ab_duplicate_helper(author_book["book_id"], author_book["author_id"])
+
+        # Insert if no duplicates found, display error otherwise
+        if not duplicate:
+            query = "INSERT INTO authors_books(author_id, book_id) VALUES(%s, %s);"
+            params.clear()
+            params = [author_book["author_id"], author_book["book_id"]]
+            cur.execute(query, params)
+            mysql.connection.commit()
+            return redirect("/authors-books")
+        else:
+            return render_template("duplicate.html", ab=duplicate)
 
 @app.route("/authors-books/edit/<int:book_id>/<int:author_id>", methods=["GET", "POST"])
 def edit_ab(book_id, author_id):
@@ -326,13 +362,7 @@ def edit_ab(book_id, author_id):
         new_author_id = ab["author"]
 
         # Check for duplicates
-        query = "SELECT b.title AS title, CONCAT(a.first_name, ' ', a.last_name) AS full_name FROM authors AS a "\
-                "INNER JOIN authors_books AS ab ON a.author_id = ab.author_id "\
-                "INNER JOIN books AS b ON b.book_id = ab.book_id "\
-                "WHERE a.author_id=%s AND b.book_id=%s;"
-        params = [new_author_id, new_book_id]
-        cur.execute(query, params)
-        duplicate = cur.fetchall()
+        duplicate = ab_duplicate_helper(new_book_id, new_author_id)
 
         # Update if no duplicates found, display error otherwise
         if not duplicate:
@@ -343,7 +373,7 @@ def edit_ab(book_id, author_id):
             mysql.connection.commit()
             return redirect("/authors-books")
         else:
-            return render_template("/duplicate.html", ab=duplicate[0])
+            return render_template("/duplicate.html", ab=duplicate)
 
 @app.route("/authors-books/delete/<book_id>/<author_id>")
 def delete_ab(book_id, author_id):
