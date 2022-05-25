@@ -122,7 +122,7 @@ def genres():
     if request.method == "GET":
         cur.execute("SELECT * FROM genres;")
         genres = cur.fetchall()
-        query = "SELECT books.title AS title, books.book_id AS book_id, "\
+        query = "SELECT b.title AS title, b.book_id AS book_id, "\
                 "g.genre_id AS genre_id, g.description AS "\
                 "description FROM genres AS g "\
                 "INNER JOIN books_genres AS bg ON g.genre_id = bg.genre_id "\
