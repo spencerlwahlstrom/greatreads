@@ -401,7 +401,6 @@ def edit_ab(book_id, author_id):
         # Update if no duplicates found, display error otherwise
         if not duplicate:
             query = "UPDATE authors_books SET author_id=%s, book_id=%s WHERE author_id=%s AND book_id=%s;"
-            params.clear()
             params = [new_author_id, new_book_id, author_id, book_id]
             cur.execute(query, params)
             mysql.connection.commit()
