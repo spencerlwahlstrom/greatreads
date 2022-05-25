@@ -423,86 +423,12 @@ def ab_duplicate_helper(book_id, author_id):
     duplicate = cur.fetchall()
     return duplicate
 
-<<<<<<< HEAD
-@app.route("/authors/edit/<int:book_id>/<int:author_id>", methods=["GET", "POST"])
-def edit_ab(book_id, author_id):  
-=======
-
-@app.route("/authors-books", methods=["GET", "POST"])
-def authors_books():
-    # READ - Show all authors_books
-    cur = mysql.connection.cursor()
-    if request.method == "GET":
-        query = "SELECT b.title AS title, "\
-                "CONCAT(a.first_name, ' ', a.last_name) AS full_name, "\
-                "b.book_id, a.author_id FROM authors AS a "\
-                "INNER JOIN authors_books AS ab "\
-                "ON a.author_id = ab.author_id "\
-                "INNER JOIN books AS b ON b.book_id = ab.book_id;"
-        cur.execute(query)
-        results = cur.fetchall()
-        cur.execute("SELECT * FROM authors;")
-        authors = cur.fetchall()
-        cur.execute("SELECT * FROM books;")
-        books = cur.fetchall()
-        return render_template(
-                "authors-books.html",
-                authors_books=results,
-                authors=authors,
-                books=books
-                )
-
-    # CREATE - Add a new author_book relationship
-    if request.method == "POST":
-        author_book = request.form
-
-        # Check for duplicates
-        duplicate = ab_duplicate_helper(
-                    author_book["book_id"],
-                    author_book["author_id"]
-                    )
-
-        # Insert if no duplicates found, display error otherwise
-        if not duplicate:
-            query = "INSERT INTO authors_books(author_id, book_id) "\
-                    "VALUES(%s, %s);"
-            params = [author_book["author_id"], author_book["book_id"]]
-            cur.execute(query, params)
-            mysql.connection.commit()
-            return redirect("/authors-books")
-        else:
-            return render_template("duplicate.html", ab=duplicate[0])
-
 
 @app.route(
-        "/authors-books/edit/<int:book_id>/<int:author_id>",
+        "/authors/edit/<int:book_id>/<int:author_id>",
         methods=["GET", "POST"]
         )
 def edit_ab(book_id, author_id):
-    # READ - Show a specific author_book relationship
-    if request.method == "GET":
-        cur = mysql.connection.cursor()
-        books_query = "SELECT book_id, title FROM books;"
-        cur.execute(books_query)
-        books = cur.fetchall()
-
-        authors_query = "SELECT author_id, "\
-                        "CONCAT(first_name, ' ', last_name) AS full_name "\
-                        "FROM authors;"
-        cur.execute(authors_query)
-        authors = cur.fetchall()
-
-        # have to cast book_id and author_id to integers
-        # for comparison in html!
-        return render_template(
-                "authors-books-edit.html",
-                books=books,
-                authors=authors,
-                book_id=int(book_id),
-                author_id=int(author_id)
-                )
-
->>>>>>> 626c290bb4a36bc149cf02ff65c1c3681407b533
     # UPDATE - Change a specific author_book relationship
     if request.method == "POST":
         cur = mysql.connection.cursor()
