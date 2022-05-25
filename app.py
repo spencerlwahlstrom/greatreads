@@ -255,7 +255,7 @@ def books():
         mysql.connection.commit()
         return redirect("/books")
 
-@app.route("/books/edit/<int:book_id>", methods=["GET", "POST"])
+@app.route("/books/edit/<int:book_id>")
 def edit_book(book_id):
     # Receive data from edit and update database
     book = request.form
