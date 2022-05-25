@@ -222,36 +222,52 @@ def authors():
 
     # READ - Show all authors
     if request.method == "GET":
+        query = "SELECT b.title AS title, CONCAT(a.first_name, ' ', a.last_name) AS full_name, "\
+            "b.book_id, a.author_id FROM authors AS a "\
+            "INNER JOIN authors_books AS ab ON a.author_id = ab.author_id "\
+            "INNER JOIN books AS b ON b.book_id = ab.book_id;"
+        cur.execute(query)
+        authors_books = cur.fetchall()
         cur.execute("SELECT * FROM authors;")
         authors = cur.fetchall()
-        return render_template("authors.html", authors = authors)
+        cur.execute("SELECT * FROM books;")
+        books = cur.fetchall()
+        return render_template("authors.html", authors_books = authors_books, authors = authors, books = books)
     
     # CREATE - Add a new author
     if request.method == "POST":
-        author = request.form
-        query = "INSERT INTO authors (first_name, last_name) VALUES(%s, %s);"
-        params = [author["first_name"], author["last_name"]]
-        cur.execute(query, params) 
-        mysql.connection.commit()
-        return redirect("/authors")
+        if request.form["hidden"] == "addAuthor":
+            author = request.form
+            query = "INSERT INTO authors (first_name, last_name) VALUES(%s, %s);"
+            params = [author["first_name"], author["last_name"]]
+            cur.execute(query, params) 
+            mysql.connection.commit()
+            return redirect("/authors")
+        if request.form["hidden"] == "addAuthorBook":
+            author_book = request.form
+
+            # Check for duplicates
+            duplicate = ab_duplicate_helper(author_book["book_id"], author_book["author_id"])
+
+            # Insert if no duplicates found, display error otherwise
+            if not duplicate:
+                query = "INSERT INTO authors_books(author_id, book_id) VALUES(%s, %s);"
+                params = [author_book["author_id"], author_book["book_id"]]
+                cur.execute(query, params)
+                mysql.connection.commit()
+                return redirect("/authors-books")
+            else:
+                return render_template("duplicate.html", ab=duplicate[0])
+
 
 @app.route("/authors/edit/<int:author_id>", methods=["GET", "POST"])
 def edit_author(author_id):
     cur = mysql.connection.cursor()
-
-    # READ - Show a specific author
-    if request.method == "GET":
-        query = "SELECT * FROM authors WHERE author_id = %s;"
-        params = [author_id]
-        cur.execute(query, params)
-        results = cur.fetchall()
-        return render_template("authors-edit.html", author=results[0])
-
     # UPDATE - Change a specific author
     if request.method == "POST":
         author = request.form
         query = "UPDATE authors SET first_name= %s, last_name= %s WHERE author_id = %s;"
-        params = [author["first_name"], author["last_name"], author["author_id"]]
+        params = [author["first_name"], author["last_name"], author_id]
         cur.execute(query, params)
         mysql.connection.commit()
         return redirect("/authors")
@@ -393,7 +409,7 @@ def edit_ab(book_id, author_id):
         else:
             return render_template("/duplicate.html", ab=duplicate[0])
 
-@app.route("/authors-books/delete/<book_id>/<author_id>")
+@app.route("/authors/delete/<book_id>/<author_id>")
 def delete_ab(book_id, author_id):
     # DELETE - Delete an author_book relationship
     cur = mysql.connection.cursor()
@@ -401,7 +417,7 @@ def delete_ab(book_id, author_id):
     params = [author_id, book_id]
     cur.execute(query, params)
     mysql.connection.commit()
-    return redirect("/authors-books")
+    return redirect("/authors")
 
 # Listener
 if __name__ == "__main__":
