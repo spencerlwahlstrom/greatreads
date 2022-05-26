@@ -27,8 +27,8 @@ DROP TABLE IF EXISTS `authors`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `authors` (
   `author_id` int(11) NOT NULL AUTO_INCREMENT,
-  `first_name` varchar(45) DEFAULT NULL,
-  `last_name` varchar(45) DEFAULT NULL,
+  `first_name` varchar(45) NOT NULL,
+  `last_name` varchar(45) NOT NULL,
   PRIMARY KEY (`author_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -80,7 +80,7 @@ DROP TABLE IF EXISTS `books`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `books` (
   `book_id` int(11) NOT NULL AUTO_INCREMENT,
-  `title` varchar(145) DEFAULT NULL,
+  `title` varchar(145) NOT NULL,
   `publisher` varchar(45) DEFAULT NULL,
   `isbn` varchar(17) DEFAULT NULL,
   `summary` varchar(1500) DEFAULT NULL,
@@ -138,7 +138,7 @@ DROP TABLE IF EXISTS `genres`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `genres` (
   `genre_id` int(11) NOT NULL AUTO_INCREMENT,
-  `description` varchar(45) DEFAULT NULL,
+  `description` varchar(45) NOT NULL,
   PRIMARY KEY (`genre_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -163,7 +163,7 @@ DROP TABLE IF EXISTS `reviews`;
 CREATE TABLE `reviews` (
   `review_id` int(11) NOT NULL AUTO_INCREMENT,
   `book_id` int(11) NOT NULL,
-  `rating` decimal(2,1) DEFAULT NULL,
+  `rating` decimal(2,1) NOT NULL,
   `summary` varchar(1500) DEFAULT NULL,
   `user_handle` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`review_id`,`book_id`),
