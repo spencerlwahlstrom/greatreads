@@ -29,6 +29,12 @@ def root():
     return render_template("index.html")
 
 
+# Home for project submission
+@app.route("/index.html")
+def index():
+    return render_template("index.html")
+
+
 # REVIEWS CRUD
 @app.route("/reviews", methods=["GET", "POST"])
 def reviews():
