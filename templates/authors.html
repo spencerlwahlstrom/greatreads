@@ -29,11 +29,11 @@
                     <input type = "hidden" id ="hidden" name = "hidden" value ="addAuthor">
                     <div class="form-group">
                         <label for="first_name">First Name</label>
-                        <input type="text" class="form-control" name="first_name" id="first_name">
+                        <input type="text" class="form-control" name="first_name" id="first_name" required>
                     </div>
                     <div class="form-group">
                         <label for="last_name">Last Name</label>
-                        <input type="text" class="form-control" name="last_name" id="last_name">
+                        <input type="text" class="form-control" name="last_name" id="last_name" required>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -128,8 +128,8 @@
                     <input type = "hidden" id ="hidden" name = "hidden" value ="addAuthorBook">
                     <div class="form-group">
                         <label for="author">Author</label>
-                        <select class="form-select" name="author_id">
-                            <option value = "0"></option>
+                        <select class="form-select" name="author_id" required>
+                            <option value="" disabled selected></option>
                             {% for author in authors %}
                             <option value = "{{author.author_id}}" >{{author.first_name}} {{author.last_name}}</option>
                             {% endfor %}
@@ -137,8 +137,8 @@
                     </div>
                     <div class="form-group">
                         <label>Book</label>
-                        <select class="form-select" name="book_id">
-                            <option value = "0"></option>
+                        <select class="form-select" name="book_id" required>
+                            <option value="" disabled selected></option>
                             {% for book in books %}
                             <option value = "{{book.book_id}}" >{{book.title}} </option>
                             {% endfor %}

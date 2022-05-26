@@ -32,7 +32,7 @@
                     </div>
                     <div class="form-group">
                         <label for="description">Description</label>
-                        <input type="text" class="form-control" name="description" id="description">
+                        <input type="text" class="form-control" name="description" id="description" required>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -104,8 +104,8 @@
                     </div>
                     <div class="form-group">
                         <label>Book</label>
-                        <select class="form-select" name="book_id">
-                            <option value = "0"></option>
+                        <select class="form-select" name="book_id" required>
+                            <option value="" disabled selected></option>
                             {% for book in books %}
                             <option value = "{{book.book_id}}" >{{book.title}} </option>
                             {% endfor %}
@@ -113,8 +113,8 @@
                     </div>
                     <div class="form-group">
                         <label>Genre</label>
-                        <select class="form-select" name="genre_id">
-                            <option value = "0"></option>
+                        <select class="form-select" name="genre_id" required>
+                            <option value="" disabled selected></option>
                             {% for genre in genres %}
                             <option value = "{{genre.genre_id}}" >{{genre.description}} </option>
                             {% endfor %}
