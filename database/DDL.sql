@@ -167,13 +167,13 @@ DROP TABLE IF EXISTS `reviews`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `reviews` (
   `review_id` int(11) NOT NULL AUTO_INCREMENT,
-  `book_id` int(11) NOT NULL,
+  `book_id` int(11),
   `rating` decimal(2,1) NOT NULL,
   `summary` varchar(1500) DEFAULT NULL,
   `user_handle` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`review_id`,`book_id`),
+  PRIMARY KEY (`review_id`),
   KEY `fk_reviews_books_idx` (`book_id`),
-  CONSTRAINT `fk_reviews_books` FOREIGN KEY (`book_id`) REFERENCES `books` (`book_id`) ON DELETE CASCADE ON UPDATE NO ACTION
+  CONSTRAINT `fk_reviews_books` FOREIGN KEY (`book_id`) REFERENCES `books` (`book_id`) ON DELETE SET NULL ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
