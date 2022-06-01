@@ -405,22 +405,23 @@ def books():
         return redirect("/books")
 
 
-@app.route("/books/edit/<int:book_id>")
+@app.route("/books/edit/<int:book_id>", methods=["GET", "POST"])
 def edit_book(book_id):
     # UPDATE - Change a specific book
-    book = request.form
-    cur = mysql.connection.cursor()
-    query = "UPDATE books SET title = %s, publisher = %s, isbn = %s, "\
-            "summary = %s, published_date = %s, msrp = %s, "\
-            "average_rating = %s WHERE book_id = %s;"
-    params = [
-                book["title"], book["publisher"], book["isbn"],
-                book["summary"], book["published_date"], book["msrp"],
-                book["average_rating"], book_id
-            ]
-    cur.execute(query, params)
-    mysql.connection.commit()
-    return redirect("/books")
+    if request.method == "POST":
+        book = request.form
+        cur = mysql.connection.cursor()
+        query = "UPDATE books SET title = %s, publisher = %s, isbn = %s, "\
+                "summary = %s, published_date = %s, msrp = %s, "\
+                "average_rating = %s WHERE book_id = %s;"
+        params = [
+                    book["title"], book["publisher"], book["isbn"],
+                    book["summary"], book["published_date"], book["msrp"],
+                    book["average_rating"], book_id
+                ]
+        cur.execute(query, params)
+        mysql.connection.commit()
+        return redirect("/books")
 
 
 @app.route("/books/delete/<int:book_id>")
