@@ -329,6 +329,30 @@ def authors():
                 return render_template("duplicate.html", ab=duplicate[0])
 
 
+@app.route("/authors/filter/<int:author_id>", methods=["GET", "POST"])
+def filter_author(author_id):
+    cur = mysql.connection.cursor()
+    query = "SELECT b.title AS title, "\
+            "CONCAT(a.first_name, ' ', a.last_name) AS full_name, "\
+            "b.book_id, a.author_id FROM authors AS a "\
+            "INNER JOIN authors_books AS ab "\
+            "ON a.author_id = ab.author_id "\
+            "INNER JOIN books AS b ON b.book_id = ab.book_id "\
+            "WHERE a.author_id = %s ;"
+    params = [author_id]
+    cur.execute(query, params)
+    authors_books = cur.fetchall()
+    cur.execute("SELECT * FROM authors;")
+    authors = cur.fetchall()
+    cur.execute("SELECT * FROM books;")
+    books = cur.fetchall()
+    return render_template(
+                "authors.html",
+                authors_books=authors_books,
+                authors=authors,
+                books=books)
+
+
 @app.route("/authors/edit/<int:author_id>", methods=["GET", "POST"])
 def edit_author(author_id):
     cur = mysql.connection.cursor()

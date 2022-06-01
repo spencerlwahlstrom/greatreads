@@ -154,11 +154,14 @@
         </div>
     </div>
 
+    <div class="container pb-3"><a href="{{ url_for('authors')}}"><button type="button" class="btn btn-secondary">Refresh Table</button></a></div>
+
     {% if authors_books %}
     <table class="table">
         <tr>
             <th>Book Title</th>
             <th>Author Name</th>
+            <th></th>
             <th></th>
             <th></th>
         </tr>
@@ -168,6 +171,7 @@
             <td>{{ab.full_name}}</td>
             <td><div class="container pb-3"><button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#edit{{ab.author_id}}{{ab.book_id}}">Edit</button></div></td>
             <td><a href="{{ url_for('delete_ab', book_id=ab.book_id, author_id=ab.author_id) }}"><button type="button" class="btn btn-secondary">Delete</button></a></td>
+            <td><a href="{{ url_for('filter_author', author_id=ab.author_id) }}"><button type="button" class="btn btn-secondary">Filter Table by This Author</button></a></td>
 
                     <!-- Modal -->
             <div class="modal fade" id="edit{{ab.author_id}}{{ab.book_id}}" tabindex="-1" role="dialog" aria-labelledby="edit{{ab.author_id}}{{ab.book_id}}" aria-hidden="true">
@@ -213,6 +217,9 @@
         </tr>
         {% endfor %}
     </table>
+
+ 
+
 
     {% else %}
     <p>There are no Author to Book relationships in the database :( Please add one!</p>
