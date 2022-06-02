@@ -44,8 +44,14 @@ def reviews():
     if request.method == "GET":
         cur.execute("SELECT r.review_id, r.book_id, b.title, r.rating, \
                     r.summary, r.user_handle FROM reviews r \
-                    INNER JOIN books b ON r.book_id = b.book_id;")
+                    LEFT JOIN books b ON r.book_id = b.book_id;")
         reviews = cur.fetchall()
+
+        # Catch cases where book_id is None (book has been deleted)
+        for review in reviews:
+            if not review["title"]:
+                review["title"] = "NULL"
+
         cur.execute("SELECT * FROM books;")
         books = cur.fetchall()
         return render_template("reviews.html", reviews=reviews, books=books)

@@ -97,7 +97,12 @@ CREATE TABLE `books` (
 
 LOCK TABLES `books` WRITE;
 /*!40000 ALTER TABLE `books` DISABLE KEYS */;
-INSERT INTO `books` VALUES (1,'The Fellowship of the Ring','George Allen & Unwin','9780007136599','A meek Hobbit from the Shire and eight companions set out on a journey to destroy the powerful One Ring and save Middle-earth from the Dark Lord Sauron. An ancient Ring thought lost for centuries has been found, and through a strange twist of fate has been given to a small Hobbit named Frodo.','1954-07-29',10.95,4.5),(2,'Good Omens: The Nice and Accurate Prophecies of Agnes Nutter, Witch','Workman','9780060853983','According to The Nice and Accurate Prophecies of Agnes Nutter, Witch (the world\'s only completely accurate book of prophecies, written in 1655, before she exploded), the world will end on a Saturday. Next Saturday, in fact. Just before dinner.','1990-05-10',8.99,4.7),(3,'Between the Lines','Simon Pulse','9781451635812','Delilah, a 15-year-old teenager, bookworm, and social outcast is obsessed with a fairy tale story about Prince Oliver called Between the Lines. No one is able to understand Delilah\'s obsession with a book written for children.','2012-06-12',8.07,4.3),(4,'Harry Potter and the Philosopher\'s Stone','Bloomsbury','9780939173341','Adaptation of the first of J.K. Rowling\'s popular children\'s novels about Harry Potter, a boy who learns on his eleventh birthday that he is the orphaned son of two powerful wizards and possesses unique magical powers of his own. He is summoned from his life as an unwanted child to become a student at Hogwarts, an English boarding school for wizards. There, he meets several friends who become his closest allies and help him discover the truth about his parents\' mysterious deaths.','1997-06-26',7.50,4.8),(5,'Harry Potter and the Chamber of Secrets','Bloomsbury','9781408865408','The second instalment of boy wizard Harry Potter\'s adventures at Hogwarts School of Witchcraft and Wizardry, based on the novel by JK Rowling. A mysterious elf tells Harry to expect trouble during his second year at Hogwarts, but nothing can prepare him for trees that fight back, flying cars, spiders that talk and deadly warnings written in blood on the walls of the school.','1998-07-02',9.99,4.9);
+INSERT INTO `books` VALUES 
+  (1,'The Fellowship of the Ring','George Allen & Unwin','9780007136599','A meek Hobbit from the Shire and eight companions set out on a journey to destroy the powerful One Ring and save Middle-earth from the Dark Lord Sauron. An ancient Ring thought lost for centuries has been found, and through a strange twist of fate has been given to a small Hobbit named Frodo.','1954-07-29',10.95,4.5),
+  (2,'Good Omens: The Nice and Accurate Prophecies of Agnes Nutter, Witch','Workman','9780060853983','According to The Nice and Accurate Prophecies of Agnes Nutter, Witch (the world''s only completely accurate book of prophecies, written in 1655, before she exploded), the world will end on a Saturday. Next Saturday, in fact. Just before dinner.','1990-05-10',8.99,4.7),
+  (3,'Between the Lines','Simon Pulse','9781451635812','Delilah, a 15-year-old teenager, bookworm, and social outcast is obsessed with a fairy tale story about Prince Oliver called Between the Lines. No one is able to understand Delilah''s obsession with a book written for children.','2012-06-12',8.07,4.3),
+  (4,'Harry Potter and the Philosopher''s Stone','Bloomsbury','9780939173341','Adaptation of the first of J.K. Rowling''s popular children''s novels about Harry Potter, a boy who learns on his eleventh birthday that he is the orphaned son of two powerful wizards and possesses unique magical powers of his own. He is summoned from his life as an unwanted child to become a student at Hogwarts, an English boarding school for wizards. There, he meets several friends who become his closest allies and help him discover the truth about his parents'' mysterious deaths.','1997-06-26',7.50,4.8),
+  (5,'Harry Potter and the Chamber of Secrets','Bloomsbury','9781408865408','The second instalment of boy wizard Harry Potter''s adventures at Hogwarts School of Witchcraft and Wizardry, based on the novel by JK Rowling. A mysterious elf tells Harry to expect trouble during his second year at Hogwarts, but nothing can prepare him for trees that fight back, flying cars, spiders that talk and deadly warnings written in blood on the walls of the school.','1998-07-02',9.99,4.9);
 /*!40000 ALTER TABLE `books` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -149,7 +154,7 @@ CREATE TABLE `genres` (
 
 LOCK TABLES `genres` WRITE;
 /*!40000 ALTER TABLE `genres` DISABLE KEYS */;
-INSERT INTO `genres` VALUES (1,'Fiction'),(2,'Fantasy'),(3,'Science Fiction'),(4,'Humor'),(5,'Children\'s '),(6,'Adventure');
+INSERT INTO `genres` VALUES (1,'Fiction'),(2,'Fantasy'),(3,'Science Fiction'),(4,'Humor'),(5,'Children''s '),(6,'Adventure');
 /*!40000 ALTER TABLE `genres` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -162,13 +167,13 @@ DROP TABLE IF EXISTS `reviews`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `reviews` (
   `review_id` int(11) NOT NULL AUTO_INCREMENT,
-  `book_id` int(11) NOT NULL,
+  `book_id` int(11),
   `rating` decimal(2,1) NOT NULL,
   `summary` varchar(1500) DEFAULT NULL,
   `user_handle` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`review_id`,`book_id`),
+  PRIMARY KEY (`review_id`),
   KEY `fk_reviews_books_idx` (`book_id`),
-  CONSTRAINT `fk_reviews_books` FOREIGN KEY (`book_id`) REFERENCES `books` (`book_id`) ON DELETE CASCADE ON UPDATE NO ACTION
+  CONSTRAINT `fk_reviews_books` FOREIGN KEY (`book_id`) REFERENCES `books` (`book_id`) ON DELETE SET NULL ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
