@@ -7,6 +7,7 @@
     <h2>Authors</h2>
     <p class="important">Displays all Authors and their attributes</p>
     
+    
     <!-- Button trigger modal -->
     <div class="container pb-3">
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addAuthorModal">
@@ -154,14 +155,12 @@
         </div>
     </div>
 
-    <div class="container pb-3"><a href="{{ url_for('authors')}}"><button type="button" class="btn btn-secondary">Refresh Table</button></a></div>
-
+<section id = "ab">
     {% if authors_books %}
     <table class="table">
         <tr>
             <th>Book Title</th>
             <th>Author Name</th>
-            <th></th>
             <th></th>
             <th></th>
         </tr>
@@ -171,7 +170,6 @@
             <td>{{ab.full_name}}</td>
             <td><div class="container pb-3"><button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#edit{{ab.author_id}}{{ab.book_id}}">Edit</button></div></td>
             <td><a href="{{ url_for('delete_ab', book_id=ab.book_id, author_id=ab.author_id) }}"><button type="button" class="btn btn-secondary">Delete</button></a></td>
-            <td><a href="{{ url_for('filter_author', author_id=ab.author_id) }}"><button type="button" class="btn btn-secondary">Filter Table by This Author</button></a></td>
 
                     <!-- Modal -->
             <div class="modal fade" id="edit{{ab.author_id}}{{ab.book_id}}" tabindex="-1" role="dialog" aria-labelledby="edit{{ab.author_id}}{{ab.book_id}}" aria-hidden="true">
@@ -217,9 +215,21 @@
         </tr>
         {% endfor %}
     </table>
+</section>
+    <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown">Filter by Author
+            <span class="caret"></span></button>
+            <ul class="dropdown-menu">
+                {% for author in authors %}
+                    <li><a href="{{ url_for('filter_author', author_id= author.author_id, _anchor= 'ab') }}">{{author.first_name}} {{author.last_name}}</a></li>
+                {% endfor %}
+            </ul>
+    </div>
 
+
+
+    <div class="container pb-3" style = "margin-top: 10px;"><a href="{{ url_for('authors', _anchor= 'ab')}}"><button type="button" class="btn btn-secondary">Refresh Table</button></a></div>
  
-
 
     {% else %}
     <p>There are no Author to Book relationships in the database :( Please add one!</p>
