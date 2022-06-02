@@ -226,13 +226,9 @@
             </ul>
     </div>
 
-
-
-    <div class="container pb-3" style = "margin-top: 10px;"><a href="{{ url_for('authors', _anchor= 'ab')}}"><button type="button" class="btn btn-secondary">Refresh Table</button></a></div>
- 
-
     {% else %}
-    <p>There are no Author to Book relationships in the database :( Please add one!</p>
+    <p>No Results</p>
 
     {% endif %}
+    <div class="container pb-3" style = "margin-top: 10px;"><a href="{{ url_for('authors', _anchor= 'ab')}}"><button type="button" class="btn btn-secondary">Refresh Table</button></a></div>
 {% endblock %}
