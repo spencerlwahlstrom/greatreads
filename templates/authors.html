@@ -221,7 +221,7 @@
             <span class="caret"></span></button>
             <ul class="dropdown-menu">
                 {% for author in authors %}
-                    <li><a href="{{ url_for('filter_author', author_id= author.author_id, _anchor= 'ab') }}">{{author.first_name}} {{author.last_name}}</a></li>
+                    <li><a style = " color: inherit;" href="{{ url_for('filter_author', author_id= author.author_id, _anchor= 'ab') }}">{{author.first_name}} {{author.last_name}}</a></li>
                 {% endfor %}
             </ul>
     </div>
