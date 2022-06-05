@@ -30,6 +30,14 @@
         Displays all Reviews and their attributes. 
         <br>
         Add a new Review, or update/delete an existing Review.
+        <br>
+        <br>
+        <b>Nullable Relationship:</b>
+        <br>
+        <em>
+            If a Book is deleted, all associated Reviews for that Book are updated to Null.
+            A Review does not need to have a Book in our design, which helps avoid a delete anomaly for a given user's data (review).
+        </em>
     </p>
 
     <h2>Genres</h2>

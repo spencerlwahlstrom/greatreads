@@ -72,15 +72,6 @@ def reviews():
 
 @app.route("/reviews/edit/<int:review_id>", methods=["GET", "POST"])
 def edit_review(review_id):
-    # READ - Show one specific review for editing
-    if request.method == "GET":
-        cur = mysql.connection.cursor()
-        query = "SELECT * FROM reviews WHERE review_id = %s;"
-        params = [review_id]
-        cur.execute(query, params)
-        results = cur.fetchall()
-        return render_template("reviews-edit.html", review=results[0])
-
     # UPDATE - Change a review
     if request.method == "POST":
         review = request.form
@@ -89,7 +80,7 @@ def edit_review(review_id):
                 WHERE review_id = %s;"
         params = [
                     review["rating"], review["summary"],
-                    review["user_handle"], review["review_id"]
+                    review["user_handle"], review_id
                 ]
         cur.execute(query, params)
         mysql.connection.commit()
