@@ -1,3 +1,7 @@
+-- Zachary Meyers, Spencer Wahlstrom
+-- CS340 Intro to Databases - Final Project - Greatreads
+-- Schema dump, importable with sample data...
+
 -- MariaDB dump 10.19  Distrib 10.4.24-MariaDB, for Linux (x86_64)
 --
 -- Host: classmysql.engr.oregonstate.edu    Database: cs340_wahlstrs
