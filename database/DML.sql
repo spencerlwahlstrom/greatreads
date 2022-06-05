@@ -18,7 +18,7 @@ DELETE FROM books WHERE book_id = :book_id_from_delete_button;
 
 -- SELECT: Get all review data to populate the Reviews page (include book's title)
 SELECT r.review_id, r.book_id, b.title, r.rating, r.summary, r.user_handle FROM reviews r
-INNER JOIN books b ON r.book_id = b.book_id;
+LEFT JOIN books b ON r.book_id = b.book_id;
 
 -- SELECT: Get book_id and title to populate the dropdown for adding a review
 SELECT book_id, title from books;
@@ -40,11 +40,11 @@ DELETE FROM reviews WHERE review_id = :review_id_from_delete_button;
 SELECT * FROM authors;
 
 -- SELECT: Filter authors table by input to get all books by a single author. 
-SELECT  books.title, CONCAT(authors.first_name,' ',authors.last_name) 
-FROM authors
-INNER JOIN authors_books ON authors.author_id = authors_books.author_id
-INNER JOIN books ON books.book_id = authors_books.book_id
-WHERE authors.author_id =:author_id_from_drop_down;
+SELECT  b.title, CONCAT(a.first_name,' ',a.last_name) 
+FROM authors AS a
+INNER JOIN authors_books AS ab ON a.author_id = ab.author_id
+INNER JOIN books AS b ON b.book_id = ab.book_id
+WHERE a.author_id =:author_id_from_drop_down;
 
 -- SELECT: Get book_id and title to populate the dropdown for adding an author
 SELECT book_id, title from books;
@@ -69,10 +69,10 @@ DELETE FROM authors_books WHERE author_id =:author_id_from_delete_button AND boo
 -- AUTHORS_BOOKS
 
 -- SELECT: Get all booktitles associated with Authors for Books by Authors Table
-SELECT  books.title, CONCAT(authors.first_name,' ',authors.last_name) 
-FROM authors
-INNER JOIN authors_books ON authors.author_id = authors_books.author_id
-INNER JOIN books ON books.book_id = authors_books.book_id
+SELECT  b.title, CONCAT(a.first_name,' ',a.last_name) 
+FROM authors AS a
+INNER JOIN authors_books AS ab ON a.author_id = ab.author_id
+INNER JOIN books AS b ON b.book_id = ab.book_id
 
 -- INSERT: Add a new author, book relationship to authors_books table
 INSERT INTO authors_books(author_id, book_id)
@@ -91,11 +91,11 @@ DELETE FROM authors_books WHERE author_id=:author_id_from_delete_button AND book
 SELECT * FROM genres;
 
 -- SELECT: Gets all books for each genre, from books_genre table
-SELECT books.title, genres.description AS genre
-FROM genres
-INNER JOIN books_genres ON genres.genre_id = books_genres.genre_id
-INNER JOIN books ON books.book_id = books_genres.book_id;
-
+SELECT b.title AS title, b.book_id AS book_id, g.genre_id AS genre_id, g.description AS description 
+FROM genres AS g
+INNER JOIN books_genres AS bg ON g.genre_id = bg.genre_id
+INNER JOIN books AS b ON b.book_id = bg.book_id 
+ORDER BY description ASC;
 
 -- INSERT: Add a new genre
 INSERT INTO genres (description)
