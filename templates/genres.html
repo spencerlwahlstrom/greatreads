@@ -58,10 +58,7 @@
         {% for genre in genres %}
         <tr>
             <td>{{ genre.description }} </td>
-            <td>
-                <a href="{{ url_for('edit_genre', genre_id=genre.genre_id) }}">
-                    <button type="button" class="btn btn-secondary">Edit</button>
-                </a>
+            <td><div class="container pb-3"><button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#edit{{genre.genre_id}}">Edit Genre</button></div>
             </td>
             <td>
                 <a href="{{ url_for('delete_genre', genre_id=genre.genre_id) }}">
@@ -69,6 +66,32 @@
                 </a>
             </td>
         </tr>
+                                                            <!-- Edit Modal -->
+        <div class="modal fade" id="edit{{genre.genre_id}}" tabindex="-1" role="dialog" aria-labelledby="edit{{genre.genre_id}}" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="edit{{genre.genre_id}}">Editing {{genre.description}} </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" id="updateGenres" action="{{ url_for('edit_genre', genre_id=genre.genre_id) }}">
+                        <div class="form-group">
+                            <label for="description">Description</label>
+                            <input type="text" class="form-control" name="description" id="description" value = "{{genre.description}}">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Edit</button>
+                        </div>    
+                    </form>
+                </div>
+            </div>
+            </div>
+        </div>
+        
         {% endfor %}
     </table>
 
@@ -143,9 +166,7 @@
             <td>{{ bg.title }}</td>
             <td>{{ bg.description }}</td>
             <td>
-                <a href="{{ url_for('edit_book_genre', book_id=bg.book_id, genre_id=bg.genre_id) }}">
-                    <button type="button" class="btn btn-secondary">Edit</button>
-                </a>
+                <div class="container pb-3"><button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#edit{{bg.genre_id}}{{bg.book_id}}">Edit Genre </button></div>
             </td>
             <td>
                 <a href="{{ url_for('delete_book_genre', book_id=bg.book_id, genre_id=bg.genre_id) }}">
@@ -153,6 +174,37 @@
                 </a>
             </td>
         </tr>
+                                    <!-- Modal -->
+        <div class="modal fade" id="edit{{bg.genre_id}}{{bg.book_id}}" tabindex="-1" role="dialog" aria-labelledby="edit{{bg.genre_id}}{{bg.book_id}}" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="edit{{bg.genre_id}}{{bg.book_id}}" >Edit Genre for <em>{{bg.title}}</em></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" id="editbookgenre" action="{{url_for('edit_book_genre', book_id = bg.book_id, genre_id = bg.genre_id)}}">
+                            <label>Genre</label>
+                            <select class="form-select" name="genre_id" id="genre_id">
+                                {% for genre in genres %}
+                                    {% if genre.genre_id == bg.genre_id %} 
+                                        <option value="{{genre.genre_id}}" selected>{{genre.description}}</option>
+                                    {% else %} 
+                                        <option value="{{genre.genre_id}}">{{genre.description}}</option>
+                                    {% endif %} 
+                                {% endfor %}
+                            </select>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Edit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            </div>
+        </div>
         {% endfor %}
     </table>
 

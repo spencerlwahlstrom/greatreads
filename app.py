@@ -198,7 +198,7 @@ def edit_genre(genre_id):
     if request.method == "POST":
         genre = request.form
         query = "UPDATE genres SET description = %s WHERE genre_id = %s;"
-        params = [genre["description"], genre["genre_id"]]
+        params = [genre["description"], genre_id]
         cur.execute(query, params)
         mysql.connection.commit()
         return redirect("/genres")
@@ -211,32 +211,13 @@ def edit_genre(genre_id):
 def edit_book_genre(book_id, genre_id):
     cur = mysql.connection.cursor()
 
-    # READ - Show all book_genre releationships
-    if request.method == "GET":
-        query = "SELECT * FROM books WHERE book_id = %s;"
-        params = [book_id]
-        cur.execute(query, params)
-        book = cur.fetchall()
-        query = "SELECT * FROM genres WHERE genre_id = %s;"
-        params = [genre_id]
-        cur.execute(query, params)
-        genre = cur.fetchall()
-        cur.execute("SELECT * FROM genres;")
-        genres = cur.fetchall()
-        return render_template(
-                "books-genres.html",
-                book=book[0],
-                genre=genre[0],
-                genres=genres
-                )
-
     # UPDATE - Change a specific book_genre relationship
     if request.method == "POST":
         book_genre = request.form
 
         # Check for duplicates
         duplicate = bg_duplicate_helper(
-                    book_genre["book_id"],
+                    book_id,
                     book_genre["genre_id"]
                     )
 
@@ -246,8 +227,8 @@ def edit_book_genre(book_id, genre_id):
                     "WHERE genre_id = %s AND book_id =%s;"
             params = [
                         book_genre["genre_id"],
-                        book_genre["original_genre_id"],
-                        book_genre["book_id"]
+                        genre_id,
+                        book_id,
                     ]
             cur.execute(query, params)
             mysql.connection.commit()
