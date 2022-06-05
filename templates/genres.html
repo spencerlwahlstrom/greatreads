@@ -158,15 +158,15 @@
         <tr>
             <th>Title</th>
             <th>Genre</th>
-            <th>Edit Genre</th>
-            <th>Delete Genre</th>
+            <th></th>
+            <th></th>
         </tr>
         {% for bg in books_genres %}
         <tr>
             <td>{{ bg.title }}</td>
             <td>{{ bg.description }}</td>
             <td>
-                <div class="container pb-3"><button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#edit{{bg.genre_id}}{{bg.book_id}}">Edit Genre </button></div>
+                <div class="container pb-3"><button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#edit{{bg.genre_id}}{{bg.book_id}}">Edit</button></div>
             </td>
             <td>
                 <a href="{{ url_for('delete_book_genre', book_id=bg.book_id, genre_id=bg.genre_id) }}">
