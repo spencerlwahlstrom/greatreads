@@ -80,7 +80,12 @@
             <td>{{ book.title }}</td>
             <td>{{ book.publisher }}</td>
             <td>{{ book.isbn }}</td>
-            <td>{{ book.summary[0:25] }}...</td>
+            <td>
+                <details>
+                    <summary>View</summary>
+                    <p>{{ book.summary }}</p>
+                </details>
+            </td>
             <td>{{ book.published_date }}</td>
             <td>{{ book.msrp }}</td>
             <td>{{ book.average_rating }}</td>
