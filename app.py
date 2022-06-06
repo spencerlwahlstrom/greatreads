@@ -1,3 +1,9 @@
+# Citation
+# scope: all router functions for app.py
+# date: 6/6/2022
+# originality: functions based on functions flask guide
+# Source: https://github.com/osu-cs340-ecampus/flask-starter-app
+
 from flask import Flask, render_template, redirect, request
 from flask_mysqldb import MySQL
 import os
@@ -310,6 +316,7 @@ def authors():
 @app.route("/authors/filter/<int:author_id>", methods=["GET", "POST"])
 def filter_author(author_id):
     cur = mysql.connection.cursor()
+    # query filters authors_books table by author_id paramter
     query = "SELECT b.title AS title, "\
             "CONCAT(a.first_name, ' ', a.last_name) AS full_name, "\
             "b.book_id, a.author_id FROM authors AS a "\
