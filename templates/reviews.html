@@ -100,7 +100,7 @@
                                 <label for="book">Book</label>
                                 <select class="form-select" name="book" required>
                                     <option value="" disabled selected></option>
-                                    <option value="None">None</option>
+                                    <option value="None">NULL</option>
                                     {% for book in books %}
                                         {% if review.book_id == book.book_id %}
                                             <option value = "{{book.book_id}}" selected>{{book.title}}</option>
