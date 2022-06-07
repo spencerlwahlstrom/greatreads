@@ -102,7 +102,11 @@
                                     <option value="" disabled selected></option>
                                     <option value="None">None</option>
                                     {% for book in books %}
-                                    <option value = "{{book.book_id}}">{{book.title}}</option>
+                                        {% if review.book_id == book.book_id %}
+                                            <option value = "{{book.book_id}}" selected>{{book.title}}</option>
+                                        {% else %}
+                                            <option value = "{{book.book_id}}">{{book.title}}</option>
+                                        {% endif %} 
                                     {% endfor %}
                                 </select>
                             </div>
