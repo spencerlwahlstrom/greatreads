@@ -28,7 +28,7 @@ INSERT INTO reviews (book_id, rating, summary, user_handle)
 VALUES (book_id=:book_id_from_add_dropdown, rating=:rating_input, summar=:summary_input, user_handle=user_handle_input);
 
 -- UPDATE: Edit an existing review
-UPDATE reviews SET rating=:rating_input, summary=:summary_input, user_handle=:user_handle_input
+UPDATE reviews SET book_id=:book_id_input, rating=:rating_input, summary=:summary_input, user_handle=:user_handle_input
 WHERE review_id = :review_id_from_edit_button;
 
 -- DELETE: Delete an existing review

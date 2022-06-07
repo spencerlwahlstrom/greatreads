@@ -177,7 +177,7 @@ CREATE TABLE `reviews` (
   `user_handle` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`review_id`),
   KEY `fk_reviews_books_idx` (`book_id`),
-  CONSTRAINT `fk_reviews_books` FOREIGN KEY (`book_id`) REFERENCES `books` (`book_id`) ON DELETE SET NULL ON UPDATE NO ACTION
+  CONSTRAINT `fk_reviews_books` FOREIGN KEY (`book_id`) REFERENCES `books` (`book_id`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 

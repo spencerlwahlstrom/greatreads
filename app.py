@@ -81,11 +81,15 @@ def edit_review(review_id):
     # UPDATE - Change a review
     if request.method == "POST":
         review = request.form
+        if review["book"] == "None":
+            book_id = None
+        else:
+            book_id = review["book"]
         cur = mysql.connection.cursor()
-        query = "UPDATE reviews SET rating= %s, summary= %s, user_handle=%s \
+        query = "UPDATE reviews SET book_id= %s, rating= %s, summary= %s, user_handle=%s \
                 WHERE review_id = %s;"
         params = [
-                    review["rating"], review["summary"],
+                    book_id, review["rating"], review["summary"],
                     review["user_handle"], review_id
                 ]
         cur.execute(query, params)
