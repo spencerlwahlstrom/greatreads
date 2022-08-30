@@ -1,16 +1,9 @@
-# Step 4 Draft Version Update
+# Great Reads
 
-### What works
-All CRUD steps for the Books entity are functional and wired up to the DB. Read, Update, and Delete
-work for the M:M intersection table Authors_Books as a bonus (everything but Create). 
+### Great Reads is user friendly book app for rating books with friends. The application is built using python flask packages, and uses mysql database for storage. 
 
-### What doesn't work
-All other entities (Authors, Reviews, Genres, Books_Genres) are not wired up to the DB yet and
-consist of sample data from the previous draft. The Authors_Books page has a filter dropdown and a 
-form for adding a new Author to Book relationship, both of which are not yet functional.
-
-### Where/why you are blocked
-No blockers, we are excited to implement CRUD for the remaining entities and to make the app prettier!
+#ER Diagram
+ 
 
 # Quick start guide
 
