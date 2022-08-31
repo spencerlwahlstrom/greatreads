@@ -4,7 +4,9 @@
 
  ![alt text](https://github.com/spencerlwahlstrom/greatreads/blob/main/ERD.PNG)
  
- sample data on book page.
+ # sample data on book page.
+ 
+ 
  ![alt text](https://github.com/spencerlwahlstrom/greatreads/blob/main/books.PNG)
 
 # Quick start guide
