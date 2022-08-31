@@ -9,7 +9,7 @@
  
  ![alt text](https://github.com/spencerlwahlstrom/greatreads/blob/main/books.PNG)
 
-# Quick start guide
+### Quick start guide
 
 ### Create a .env like the below, fill username and password
 ```
