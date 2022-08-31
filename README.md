@@ -3,7 +3,7 @@
 ### Great Reads is user friendly book app for rating books with friends. The application is built using python flask packages, and uses mysql database for storage. 
 
 # ER Diagram
- ![alt text] [ https://github.com/spencerlwahlstrom/greatreads/blob/main/ERD.PNG ]
+ ![alt text] (https://github.com/spencerlwahlstrom/greatreads/blob/main/ERD.PNG)
 
 # Quick start guide
 
